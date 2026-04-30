@@ -23,10 +23,9 @@ verb_orbit: Reasoning
 ## Usage
 
 ```bash
-/compare [target]                        # Standard execution
-/compare [target] --deep                 # High-fidelity, slow execution
-/compare [target] --batch                # Apply across multiple targets
-/compare --status                        # Check pending queue
+/compare [file1] [file2]          # Check drift between two files
+/compare --baseline [file]        # Compare current state against a baseline
+/compare --enforce                # Automatically apply harmonization
 ```
 
 ---
@@ -40,26 +39,35 @@ verb_orbit: Reasoning
 ### C , Group
 
 Bring the divergent artifacts together.
+Load the files into the working context buffer.
 
 ### O , Align
 
-Set them against the canonical standard (e.g., MBS, CORE).
+Set them against the canonical standard (e.g., MBS, CORE, Quality Mandate).
+What is the "Ground Truth" they are supposed to follow?
 
 ### M , Track
 
 Identify exactly where the drift occurred.
+Generate a `diff` or a semantic variance report. List the exact line numbers and concepts that drifted.
 
 ### P , Harmonize
 
 Adjust the structures to match the standard without losing their unique value.
+Rewrite the divergent sections. Standardize the vocabulary (e.g., replace em-dashes with commas).
 
 ### A , Evaluate
 
 Check if the harmonization broke any local dependencies.
+Run a validation check. Did renaming a concept break a link elsewhere?
 
 ### R , Resolve
 
 Finalize the alignment and commit the changes.
+```bash
+git add [files]
+git commit -m "COMPARE: Harmonized drift against canonical baseline"
+```
 
 ---
 
@@ -67,9 +75,11 @@ Finalize the alignment and commit the changes.
 
 Provide a structured report upon completion:
 
-```
-✅ {verb.upper()} complete for [Target]
-📄 Artifacts generated: [List paths]
+```markdown
+✅ COMPARE complete for [Target]
+📄 Artifacts generated:
+  - path/to/output_1.md
+  - path/to/output_2.yaml
 📊 Key Metrics: [Relevance/Impact/Score]
 ✓  Validation: [PASS/WARNINGS/ERRORS]
 💾 Committed: [commit hash]

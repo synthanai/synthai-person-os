@@ -23,10 +23,9 @@ verb_orbit: Awareness
 ## Usage
 
 ```bash
-/probe [target]                        # Standard execution
-/probe [target] --deep                 # High-fidelity, slow execution
-/probe [target] --batch                # Apply across multiple targets
-/probe --status                        # Check pending queue
+/probe [system_path]              # Deep scan of a specific directory/system
+/probe --stress-test              # Run chaos engineering protocols
+/probe [url] --network            # Map external node connections
 ```
 
 ---
@@ -40,22 +39,38 @@ verb_orbit: Awareness
 ### P , Parse
 
 Deconstruct the target system into its component parts. Map the nodes and edges.
+If probing a codebase, generate an AST or an architectural graph. If probing an organization, map the communication lines.
+
+```bash
+# Example: Find all dependencies and imports
+grep -r "import" repos/ --include="*.py" > operations/probe/dependencies.txt
+```
 
 ### R , Reveal
 
 Expose hidden assumptions, unspoken rules, and shadow power structures.
+Look for "dead code", undocumented APIs, or unstated cultural norms. What is operating without explicit permission?
 
 ### O , Observe
 
 Watch the system under pressure. See how it reacts to anomalies or stress.
+Monitor logs during peak load or simulate edge cases.
+
+```bash
+tail -f .agent/scratch/*.log | grep "ERROR\|WARN"
+```
 
 ### B , Break
 
 Intentionally introduce friction to test resilience. Where does the system fail?
+Remove a dependency, block a network port, or introduce a contradiction in the prompts. Observe the cascading failure.
+*Safety Check:* Only run Break protocols in isolated environments or via `--dry-run`.
 
 ### E , Extract
 
 Pull the definitive truth from the breakage. Document the actual, not theoretical, limits.
+Write the `PROBE_REPORT.md` detailing the failure points and the true structural boundaries of the system.
+Queue action items to reinforce the broken nodes.
 
 ---
 
@@ -63,9 +78,11 @@ Pull the definitive truth from the breakage. Document the actual, not theoretica
 
 Provide a structured report upon completion:
 
-```
-✅ {verb.upper()} complete for [Target]
-📄 Artifacts generated: [List paths]
+```markdown
+✅ PROBE complete for [Target]
+📄 Artifacts generated:
+  - path/to/output_1.md
+  - path/to/output_2.yaml
 📊 Key Metrics: [Relevance/Impact/Score]
 ✓  Validation: [PASS/WARNINGS/ERRORS]
 💾 Committed: [commit hash]

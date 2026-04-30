@@ -23,10 +23,9 @@ verb_orbit: Reasoning
 ## Usage
 
 ```bash
-/digest [target]                        # Standard execution
-/digest [target] --deep                 # High-fidelity, slow execution
-/digest [target] --batch                # Apply across multiple targets
-/digest --status                        # Check pending queue
+/digest [directory]               # Compress all MD files in a directory
+/digest [file.md] --ratio 0.2     # Compress to 20% of original length
+/digest --format exec-summary     # Output as a 1-page executive summary
 ```
 
 ---
@@ -40,26 +39,33 @@ verb_orbit: Reasoning
 ### D , Deconstruct
 
 Break the massive input down into elemental statements.
+Strip away formatting, anecdotes, and filler. Reduce paragraphs to core propositions.
 
 ### I , Isolate
 
 Separate the signal from the noise. Discard the fluff.
+Identify the "load-bearing" sentences. If removing a sentence destroys the logic, keep it.
 
 ### G , Group
 
 Cluster related signals together. Find the emergent themes.
+Use affine clustering or semantic grouping to put similar propositions into thematic buckets.
 
 ### E , Extract
 
 Pull the core essence from each cluster.
+Write a single overarching principle for each thematic bucket.
 
 ### S , Synthesize
 
 Weave the extracted essences into a coherent, dense narrative.
+Ensure logical flow. Use tables and bullet points instead of long paragraphs to maximize scannability.
 
 ### T , Trim
 
 Cut every word that does not serve the synthesis. Legacy over speed.
+Run the "Delete Test": Can this sentence be removed without loss of meaning? If yes, delete it.
+**Output:** `[target]_DIGEST.md`
 
 ---
 
@@ -67,9 +73,11 @@ Cut every word that does not serve the synthesis. Legacy over speed.
 
 Provide a structured report upon completion:
 
-```
-✅ {verb.upper()} complete for [Target]
-📄 Artifacts generated: [List paths]
+```markdown
+✅ DIGEST complete for [Target]
+📄 Artifacts generated:
+  - path/to/output_1.md
+  - path/to/output_2.yaml
 📊 Key Metrics: [Relevance/Impact/Score]
 ✓  Validation: [PASS/WARNINGS/ERRORS]
 💾 Committed: [commit hash]

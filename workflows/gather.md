@@ -23,10 +23,9 @@ verb_orbit: Reasoning
 ## Usage
 
 ```bash
-/gather [target]                        # Standard execution
-/gather [target] --deep                 # High-fidelity, slow execution
-/gather [target] --batch                # Apply across multiple targets
-/gather --status                        # Check pending queue
+/gather [entityA] [entityB]       # Compare two entities
+/gather --dir [path]              # Evaluate all items in a directory
+/gather --dimensions "Speed,Cost" # Custom comparison matrix
 ```
 
 ---
@@ -40,26 +39,32 @@ verb_orbit: Reasoning
 ### G , Calibrate
 
 Set the dimensions of comparison. What metrics matter?
+Define the exact criteria for scoring (e.g., 1-5 scale for 'Alignment with MBS', 'Technical Debt', 'Execution Speed').
 
 ### A , Observe
 
 Gather data on all entities across the chosen dimensions.
+Read the source files and compile the raw evidence for each entity.
 
 ### T , Map
 
 Place the entities on a comparative matrix.
+Generate a Markdown table aligning the entities side-by-side against the dimensions.
 
 ### H , Polarize
 
 Force distinction. What makes A fundamentally different from B?
+Highlight the largest deltas in the matrix. Where is the friction most apparent?
 
 ### E , Analyze
 
 Assess the trade-offs, strengths, and critical gaps.
+Write a 1-sentence justification for each major gap identified.
 
 ### R , Recommend
 
 Propose the winning entity or the necessary hybrid.
+Based strictly on the matrix, which entity solves the core problem most effectively?
 
 ---
 
@@ -67,9 +72,11 @@ Propose the winning entity or the necessary hybrid.
 
 Provide a structured report upon completion:
 
-```
-✅ {verb.upper()} complete for [Target]
-📄 Artifacts generated: [List paths]
+```markdown
+✅ GATHER complete for [Target]
+📄 Artifacts generated:
+  - path/to/output_1.md
+  - path/to/output_2.yaml
 📊 Key Metrics: [Relevance/Impact/Score]
 ✓  Validation: [PASS/WARNINGS/ERRORS]
 💾 Committed: [commit hash]

@@ -23,10 +23,9 @@ verb_orbit: Contribution
 ## Usage
 
 ```bash
-/teach [target]                        # Standard execution
-/teach [target] --deep                 # High-fidelity, slow execution
-/teach [target] --batch                # Apply across multiple targets
-/teach --status                        # Check pending queue
+/teach [concept]                  # Generate a teaching curriculum for a concept
+/teach --audience beginner        # Calibrate teaching level
+/teach --format workshop          # Structure as an interactive session
 ```
 
 ---
@@ -40,22 +39,27 @@ verb_orbit: Contribution
 ### T , Tailor
 
 Adapt the curriculum to the learner's current cognitive capacity.
+Strip away advanced jargon. Distill the concept to its atomic primitives.
 
 ### E , Empathize
 
 Understand their starting point, their fears, and their blind spots.
+Anticipate the "Why should I care?" and "What if I fail?" questions. Address them upfront.
 
 ### A , Anchor
 
 Connect new concepts to their existing, familiar mental models.
+Use analogies. Map the unknown system to a known system (e.g., "A Git commit is like a save state in a video game").
 
 ### C , Challenge
 
 Push them past their comfort zone. Induce productive struggle.
+Design a friction point in the lesson. Give them a problem that cannot be solved by copy-pasting.
 
 ### H , Help
 
 Provide the specific scaffolding they need to succeed, then remove it.
+Offer the hint, not the answer. Document the pedagogy in `curriculum.md`.
 
 ---
 
@@ -63,9 +67,11 @@ Provide the specific scaffolding they need to succeed, then remove it.
 
 Provide a structured report upon completion:
 
-```
-✅ {verb.upper()} complete for [Target]
-📄 Artifacts generated: [List paths]
+```markdown
+✅ TEACH complete for [Target]
+📄 Artifacts generated:
+  - path/to/output_1.md
+  - path/to/output_2.yaml
 📊 Key Metrics: [Relevance/Impact/Score]
 ✓  Validation: [PASS/WARNINGS/ERRORS]
 💾 Committed: [commit hash]

@@ -23,10 +23,9 @@ verb_orbit: Contribution
 ## Usage
 
 ```bash
-/posture [target]                        # Standard execution
-/posture [target] --deep                 # High-fidelity, slow execution
-/posture [target] --batch                # Apply across multiple targets
-/posture --status                        # Check pending queue
+/posture [audience]               # Calibrate messaging for specific audience
+/posture --platform linkedin      # Optimize output for platform mechanics
+/posture --mode thought-leader    # Set output tonality
 ```
 
 ---
@@ -40,30 +39,37 @@ verb_orbit: Contribution
 ### P , Profile
 
 Assess your current MINE state (Potent, Talent, Fluent, Latent).
+Understand what internal truth is being projected. What is the core leverage you are offering?
 
 ### O , Orient
 
 Determine the target audience and their specific needs.
+Who are they? What is their primary pain point? Map their context.
 
 ### S , Shape
 
 Mold your core message to fit the audience's worldview.
+Use the HSP (Hook, Suspense, Punch) framework to structure the narrative arc.
 
 ### T , Tailor
 
 Adjust the tone, vocabulary, and medium.
+Ensure the language matches the platform (e.g., shorter syntax for social, deeper architecture for technical documentation).
 
 ### U , Unify
 
 Ensure your external expression matches your internal truth (Mind, Body, Soul).
+Do not project a capability you cannot execute. Authenticity is the ultimate differentiator.
 
 ### R , Refine
 
 Iteratively polish the delivery. Remove friction.
+Run the "Aloud Test": Read the output aloud to ensure flow. Remove corporate jargon.
 
 ### E , Express
 
 Deliver the message with calibrated authority.
+Generate the final artifact (`post.md`, `email.md`, `memo.md`) ready for publication.
 
 ---
 
@@ -71,9 +77,11 @@ Deliver the message with calibrated authority.
 
 Provide a structured report upon completion:
 
-```
-✅ {verb.upper()} complete for [Target]
-📄 Artifacts generated: [List paths]
+```markdown
+✅ POSTURE complete for [Target]
+📄 Artifacts generated:
+  - path/to/output_1.md
+  - path/to/output_2.yaml
 📊 Key Metrics: [Relevance/Impact/Score]
 ✓  Validation: [PASS/WARNINGS/ERRORS]
 💾 Committed: [commit hash]

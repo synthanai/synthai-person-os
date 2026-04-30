@@ -23,10 +23,9 @@ verb_orbit: Contribution
 ## Usage
 
 ```bash
-/mentor [target]                        # Standard execution
-/mentor [target] --deep                 # High-fidelity, slow execution
-/mentor [target] --batch                # Apply across multiple targets
-/mentor --status                        # Check pending queue
+/mentor [profile_id]              # Pull up tracking for a specific mentee
+/mentor --session                 # Log a mentorship session
+/mentor --plan                    # Generate a 6-month growth trajectory
 ```
 
 ---
@@ -40,26 +39,32 @@ verb_orbit: Contribution
 ### M , Model
 
 Demonstrate the behavior, standard, and posture you expect.
+Show, don't tell. Let them review your actual artifacts and code repositories.
 
 ### E , Empathize
 
 Deeply understand their MINE profile and life trajectory.
+Read their `mine_profile.yaml`. What is their primary shadow verb? Where is their latent capacity?
 
 ### N , Nurture
 
 Create the conditions for their latent skills to become fluent.
+Assign projects that force them to use their underdeveloped cognitive muscles. Provide a safe space for failure.
 
 ### T , Tune
 
 Adjust your involvement based on their growth rate.
+If they are accelerating, pull back. If they are drowning, step in to provide structure (not solutions).
 
 ### O , Observe
 
 Watch their autonomous execution from a distance.
+Review their PRs, their writing, and their decisions without intervening prematurely.
 
 ### R , Release
 
 Step back entirely. Let them become the mentor.
+Formally close the mentorship cycle. Document the journey in the ecosystem archives.
 
 ---
 
@@ -67,9 +72,11 @@ Step back entirely. Let them become the mentor.
 
 Provide a structured report upon completion:
 
-```
-✅ {verb.upper()} complete for [Target]
-📄 Artifacts generated: [List paths]
+```markdown
+✅ MENTOR complete for [Target]
+📄 Artifacts generated:
+  - path/to/output_1.md
+  - path/to/output_2.yaml
 📊 Key Metrics: [Relevance/Impact/Score]
 ✓  Validation: [PASS/WARNINGS/ERRORS]
 💾 Committed: [commit hash]

@@ -23,10 +23,9 @@ verb_orbit: Awareness
 ## Usage
 
 ```bash
-/remind [target]                        # Standard execution
-/remind [target] --deep                 # High-fidelity, slow execution
-/remind [target] --batch                # Apply across multiple targets
-/remind --status                        # Check pending queue
+/remind [concept]                 # Retrieve context for a specific entity
+/remind --auto                    # Hook into active context to pull relevant KIs
+/remind [concept] --deep          # Full historical traversal (SPARs + LOONs)
 ```
 
 ---
@@ -40,26 +39,36 @@ verb_orbit: Awareness
 ### R , Retrieve
 
 Pull dormant information from the internal corpus (KIs, NOOLs, SPARs, LOONs).
+Run `grep` or vector searches across the `2-research` and `knowledge` directories.
+
+```bash
+find repos/ 5-text/ .agent/ -name "NOOL.md" -type f 2>/dev/null | xargs grep -l "[concept]"
+```
 
 ### E , Extract
 
 Isolate the specific insight needed for the current moment.
+Discard the boilerplate. What is the 1-sentence decision or rule that applies *right now*?
 
 ### M , Map
 
 Connect the historical insight to the present challenge. Draw the structural parallel.
+Create a semantic link: "Because we decided X in SPAR Y, we must do Z now."
 
 ### I , Integrate
 
 Weave the old knowledge into the new context without losing fidelity.
+Inject the retrieved constraints directly into the prompt context or the current file header.
 
 ### N , Navigate
 
 Determine the optimal path to apply this knowledge.
+Does this require a code change? A messaging pivot? A new architectural diagram?
 
 ### D , Deploy
 
 Inject the knowledge into the active workflow or decision-making process.
+Pass the context state handoff to the next agentic workflow.
 
 ---
 
@@ -67,9 +76,11 @@ Inject the knowledge into the active workflow or decision-making process.
 
 Provide a structured report upon completion:
 
-```
-✅ {verb.upper()} complete for [Target]
-📄 Artifacts generated: [List paths]
+```markdown
+✅ REMIND complete for [Target]
+📄 Artifacts generated:
+  - path/to/output_1.md
+  - path/to/output_2.yaml
 📊 Key Metrics: [Relevance/Impact/Score]
 ✓  Validation: [PASS/WARNINGS/ERRORS]
 💾 Committed: [commit hash]

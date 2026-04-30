@@ -23,10 +23,9 @@ verb_orbit: Awareness
 ## Usage
 
 ```bash
-/learn [target]                        # Standard execution
-/learn [target] --deep                 # High-fidelity, slow execution
-/learn [target] --batch                # Apply across multiple targets
-/learn --status                        # Check pending queue
+/learn [session_id]               # Process a specific training/mentoring session
+/learn --live                     # Open a continuous logging buffer
+/learn [artifact_path] --extract  # Run extraction on a raw transcript
 ```
 
 ---
@@ -40,22 +39,39 @@ verb_orbit: Awareness
 ### L , Log
 
 Capture the raw experience without judgment. Document what happened, when, and who was involved.
+If logging a live session, create a timestamped raw buffer.
+
+```bash
+mkdir -p operations/sessions/raw/
+touch operations/sessions/raw/session_$(date +%Y%m%d).md
+```
 
 ### E , Extract
 
 Pull out the core mechanics. What worked? What failed? Identify the underlying causal forces.
+Run an NLP extraction pass or an LLM prompt to pull "Axioms" and "Frictions" from the raw log.
+Focus on *verbs* that were used, not just the nouns.
 
 ### A , Assimilate
 
 Integrate these mechanics into existing mental models. How does this change what you knew?
+Cross-reference the extracted axioms with the `skills/skill-knowledge-base/concept-index.json`. Does this experience validate or invalidate a known concept?
 
 ### R , Reflect
 
 Pause to consider the systemic impact. What are the second and third-order effects of this learning?
+Generate a `LOON.md` entry if this learning represents a "Scar Moment" or a significant pivot in operational philosophy.
+
+```bash
+# Append reflection to LOON
+echo "🪢 Knot: [Description]" >> LOON.md
+```
 
 ### N , Normalize
 
 Turn the learning into a standard practice. Update SOPs, workflows, or cognitive defaults.
+If a new rule is discovered, propagate it using `/upgrade`.
+**Output:** Updated workflow or skill files reflecting the assimilated knowledge.
 
 ---
 
@@ -63,9 +79,11 @@ Turn the learning into a standard practice. Update SOPs, workflows, or cognitive
 
 Provide a structured report upon completion:
 
-```
-✅ {verb.upper()} complete for [Target]
-📄 Artifacts generated: [List paths]
+```markdown
+✅ LEARN complete for [Target]
+📄 Artifacts generated:
+  - path/to/output_1.md
+  - path/to/output_2.yaml
 📊 Key Metrics: [Relevance/Impact/Score]
 ✓  Validation: [PASS/WARNINGS/ERRORS]
 💾 Committed: [commit hash]

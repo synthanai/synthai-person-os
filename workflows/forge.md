@@ -23,10 +23,9 @@ verb_orbit: Contribution
 ## Usage
 
 ```bash
-/forge [target]                        # Standard execution
-/forge [target] --deep                 # High-fidelity, slow execution
-/forge [target] --batch                # Apply across multiple targets
-/forge --status                        # Check pending queue
+/forge [artifact_type]            # Create a specific artifact (book, plan, architecture)
+/forge --from-plan [plan.md]      # Forge an artifact based on a pre-existing plan
+/forge --append [file.md]         # Append forged content to existing file
 ```
 
 ---
@@ -40,22 +39,35 @@ verb_orbit: Contribution
 ### F , Formulate
 
 Define the precise intent and requirements of the artifact.
+What must this artifact accomplish? Define the boundaries and constraints.
 
 ### O , Organize
 
 Structure the architecture. Define the schema, headings, and flow.
+Create the skeleton outline. Establish the directory structure if it is a multi-file project.
+```bash
+mkdir -p target/directory/
+touch target/directory/INDEX.md
+```
 
 ### R , Render
 
 Generate the actual content. Write the code, draft the text, draw the diagram.
+Execute the heavy lifting. Write the markdown, code the Python script, or build the HTML.
 
 ### G , Gauge
 
 Measure against the Quality Mandate. No em-dashes. High signal density.
+Run local linting, read-aloud tests, and structural validation.
 
 ### E , Execute
 
 Finalize, format, and deploy the artifact to its canonical location.
+Commit the artifact to Git.
+```bash
+git add target/directory/
+git commit -m "FORGE: Created canonical [artifact_type]"
+```
 
 ---
 
@@ -63,9 +75,11 @@ Finalize, format, and deploy the artifact to its canonical location.
 
 Provide a structured report upon completion:
 
-```
-✅ {verb.upper()} complete for [Target]
-📄 Artifacts generated: [List paths]
+```markdown
+✅ FORGE complete for [Target]
+📄 Artifacts generated:
+  - path/to/output_1.md
+  - path/to/output_2.yaml
 📊 Key Metrics: [Relevance/Impact/Score]
 ✓  Validation: [PASS/WARNINGS/ERRORS]
 💾 Committed: [commit hash]
