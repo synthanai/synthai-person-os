@@ -1,109 +1,88 @@
-> **ONTOLOGY**: All workflows MUST reference \ for canonical term definitions.
+---
+description: "Identity Foundation: Calling, Origin, Reason, Endurance."
+verb_orbit: "Professional Pathway"
+---
 
 > **EDITORIAL**: No em-dashes. Use commas, colons, or parentheses instead.
 
-> **நூல்**: **WHY** , Identity precedes execution. | **WHAT TYPE** , EXTRACTION (baseline identity) | **HOW** , Interrogate → Synthesize → Persist
+# /profile , Identity Foundation
 
-# /profile , Establish Baseline Identity
+> **நூல்**: **WHY** , Anchor your professional execution in an unshakeable core identity. | **WHAT TYPE** , IDENTITY EXTRACTION | **HOW** , Calling → Origin → Reason → Endurance
 
-> *"Before the system can work for you, it must know who you are."*
+*PROFILE* is a legacy framework within the **Professional Pathway** of Person-OS, mapping complex professional mechanics into structured execution.
 
-**PROFILE** is the first verb in the PERSON OS pipeline. It interrogates the foundational architecture of the professional and synthesizes it into a permanent, immutable truth anchor. Every downstream verb (EXPERIENCE, RESONATE, STRATEGISE, OPERATE, NARRATE) reads this file before executing. If this file is wrong or shallow, every downstream output will be contaminated.
+---
 
-**Pipeline position**: ENTRY POINT
-**Reads**: Nothing (first verb)
-**Writes to**: `profile/CORE.md`
-**Next step**: `/experience`
+> [!CAUTION]
+> **QUALITY MANDATE (NON-NEGOTIABLE)**
+>
+> Every PROFILE execution MUST follow the explicit steps below. Skipping steps leads to shallow execution. The framework is the constraint that produces the depth.
 
 ---
 
 ## Usage
 
-```
-/profile
-```
-
----
-
-## Step 1: Pre-Reasoning Governance (PASS) → HUMAN APPROVAL REQUIRED
-
-Before starting, restate the user's intent back to them using the PASS framework:
-
-- **Purpose**: Establish the foundational baseline identity of the professional.
-- **Anti-Purpose**: Do NOT accept generic job titles. Do NOT allow the user to describe their company instead of their personal operating mechanism. Do NOT let them cite their LinkedIn headline as their Calling.
-- **Success-Signal**: We mathematically isolate their core identity across 4 orthogonal dimensions. The output passes the "Stranger Test" (a person who has never met them should be able to reconstruct their worldview from reading it).
-- **Synthesis**: Acts as the immutable truth anchor (`profile/CORE.md`) that grounds every subsequent verb in the OS.
-
-Present the calculated PASS table and ask: *"Do you approve this execution intent?"*
-**STOP AND WAIT FOR EXPLICIT HUMAN APPROVAL.**
-
----
-
-## Step 2: Multi-Round Interrogation
-
-*(Execute ONLY after PASS approval)*
-
-Do NOT batch all questions. Ask them linearly, one at a time, waiting for each answer before asking the next. If an answer is vague, flat, or generic, push back with a follow-up before moving on.
-
-**Round 1: The Calling**
-Ask: *"What is the fundamental problem you get paid to solve? Not your job title. Not your company's mission. What breaks in the world when you are not present?"*
-
-- If answer is generic (e.g., "I help companies grow"), push: *"What specifically breaks? Who suffers? What is the name of the failure mode you prevent?"*
-
-**Round 2: The Origin**
-Ask: *"What is the single defining moment that permanently changed how you operate? A specific project, failure, conversation, or realization that you still reference today when making decisions."*
-
-- If answer is vague, push: *"Give me the year and the situation. What did you see that others missed? What did you lose or gain from it?"*
-
-**Round 3: The Reason**
-Ask: *"What is the philosophical principle that governs your decisions? If someone asked you to break it, what would you sacrifice rather than violate it?"*
-
-- If answer is platitudinous (e.g., "I believe in integrity"), push: *"That is a value, not a principle. What is the actual rule you apply? What does it make you do differently from someone who doesn't hold it?"*
-
-**Round 4: The Endurance**
-Ask: *"What do you have that your closest peers do not? Not a credential. Not tenure. What is the cognitive or operational capability that has compounded over time and cannot be easily replicated?"*
-
----
-
-## Step 3: Synthesis Framework (CORE)
-
-Take their 4 answers and synthesize using the **CORE** framework. Each letter must be 3-5 rich sentences that pass the Stranger Test. Target: 80-120 words per letter.
-
-- **[C]alling** (The problem they solve): Must name the failure mode, the victim of the failure, and the mechanism of the fix. Specific nouns, not category names.
-- **[O]rigin** (The defining moment): Must include a time marker, a concrete situation, a specific realization, and a lasting behavioral change.
-- **[R]eason** (The philosophical anchor): Must be actionable and falsifiable. Phrase it as a principle the user can apply to a real decision, not a value.
-- **[E]ndurance** (Unique leverage): Must include a comparative claim (what peers lack), a compounding mechanism (how it grows over time), and a domain.
-
-**Quality gate**: Before persisting, run the three tests:
-1. **ALOUD**: Would this sound flat if spoken aloud? If yes, rewrite.
-2. **DELETE**: Can any sentence be removed without loss? If yes, remove it.
-3. **STRANGER**: Would someone with zero context understand the person's worldview? If no, add specificity.
-
----
-
-## Step 4: Mandatory Persist
-
-Save the artifact directly into the root ledger.
-
-**File:** `profile/CORE.md`
-
-**Header format:**
-```
-# [Role/Domain]: C.O.R.E. Profile
-
-**Timestamp**: YYYY-MM-DD
-**Framework**: PROFILE (C.O.R.E.)
-**Domain**: [Domain (Specific Role)]
-**Produced by**: /profile
-**Feeds into**: /experience, /resonate, /strategise, /narrate
+```bash
+/profile [person_name]            # Extract full CORE profile
+/profile --deep                   # High-fidelity narrative extraction
+/profile --json                   # Output as structured data for agent ingestion
 ```
 
-Report to the user:
-- "PROFILE generated."
-- "Saved to `profile/CORE.md`."
-- "Audit: Does the CORE pass the Stranger Test?"
-- **"Next step: Run `/experience`."**
+---
+
+## The PROFILE Protocol
+
+### 00 , Session Lifecycle (Harness)
+
+**Before doing anything else**, read `AGENTS.md` and `progress.md` (if it exists) to understand the current execution state. You must update `progress.md` with your status before ending the session.
+
+### C , Calling
+
+Define the ultimate ambition. What is the gravitational pull of your work?
+Extract the primary driver that transcends job titles.
+
+```bash
+# Example extraction filter
+grep -i "purpose\|mission\|calling" source_interviews.md
+```
+
+### O , Origin
+
+Map the foundational experiences that shaped the worldview.
+Identify the "Scar Moments" and early victories that forged the current operational style.
+
+### R , Reason
+
+Articulate the logical framework. Why this path, and why now?
+Deconstruct the rational justification for the current trajectory.
+
+### E , Endurance
+
+Identify the fuel source. What sustains execution when motivation fails?
+Determine the boundaries, the non-negotiables, and the structural resilience.
 
 ---
 
-> **Voice compliance**: All synthesized output MUST pass the rules in `../../VOICE_STANDARD.md` before persisting. Run `/audit --voice` if in doubt.
+## Output Report
+
+Provide a structured report upon completion:
+
+```markdown
+✅ PROFILE complete for [Target]
+📄 Artifacts generated:
+  - path/to/output_1.md
+  - path/to/output_2.yaml
+📊 Key Metrics: [Relevance/Impact/Score]
+✓  Validation: [PASS/WARNINGS/ERRORS]
+💾 Committed: [commit hash]
+```
+
+### 💾 Mandatory Persist (State Handoff)
+
+> **CRITICAL RULE**: Do not rely on chat context to pass state to the next workflow. 
+
+Every workflow execution MUST persist its output to a physical artifact in the repository. This artifact serves as the uncorrupted input for the next verb in the sequence. 
+
+- **If an appropriate directory exists**, save it there (e.g., `operations/spar/`, `2-research/`).
+- **If no directory is defined**, save it to `.agent/scratch/` or `operations/queues/` with a descriptive timestamped filename.
+- Conclude your chat response by explicitly providing the **Artifact URI** to the user so they can trigger the next workflow targeting that precise path.

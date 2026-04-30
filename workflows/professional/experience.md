@@ -1,106 +1,88 @@
-> **ONTOLOGY**: All workflows MUST reference \ for canonical term definitions.
+---
+description: "Capability Ledger: Situation, Task, Obstacle, Result, Yield."
+verb_orbit: "Professional Pathway"
+---
 
 > **EDITORIAL**: No em-dashes. Use commas, colons, or parentheses instead.
 
-> **நூல்**: **WHY** , Capability is proven over time. | **WHAT TYPE** , EXTRACTION (timeline mapping) | **HOW** , Read Profile → Interrogate → Synthesize → Persist
+# /experience , Capability Ledger
 
-# /experience , Extract Capability Timeline
+> **நூல்**: **WHY** , Translate past chaos into quantified, reusable capabilities. | **WHAT TYPE** , CAPABILITY MAPPING | **HOW** , Situation → Task → Obstacle → Result → Yield
 
-> *"Experience is not a resume. It is a ledger of conquered complexity."*
+*EXPERIENCE* is a legacy framework within the **Professional Pathway** of Person-OS, mapping complex professional mechanics into structured execution.
 
-**EXPERIENCE** is the second verb in the PERSON OS pipeline. It takes the baseline identity established by `/profile` and maps it against real historical evidence. Each milestone becomes a ledger entry proving the Calling is not theoretical but physically demonstrated.
+---
 
-**Pipeline position**: VERB 2 of 6
-**Reads**: `profile/CORE.md` (REQUIRED)
-**Writes to**: `experience/[milestone].md`
-**Previous step**: `/profile`
-**Next step**: `/resonate`
+> [!CAUTION]
+> **QUALITY MANDATE (NON-NEGOTIABLE)**
+>
+> Every EXPERIENCE execution MUST follow the explicit steps below. Skipping steps leads to shallow execution. The framework is the constraint that produces the depth.
 
 ---
 
 ## Usage
 
-```
-/experience
-```
-
----
-
-## Step 1: Pre-Reasoning Governance (PASS) → HUMAN APPROVAL REQUIRED
-
-Before starting, restate the user's intent back to them using the PASS framework:
-
-- **Purpose**: Map the user's historical capability against their baseline identity. Every milestone must directly prove a dimension of their CORE.
-- **Anti-Purpose**: Do NOT accept chronological resumes or task lists devoid of complexity. Break chronology if needed. We want the 3 moments where the person was genuinely tested and the outcome was genuinely uncertain.
-- **Success-Signal**: Each milestone produces a STORY ledger entry with specific quantified outcomes, a named obstacle, and a compounding internal yield that still shapes their behavior today.
-- **Synthesis**: Transforms tacit memory into an explicit ledger (`experience/[milestone].md`) that will fuel `/strategise` and `/narrate`.
-
-Present PASS table and ask: *"Do you approve this execution intent?"*
-**STOP AND WAIT FOR EXPLICIT HUMAN APPROVAL.**
-
----
-
-## Step 2: Context Injection
-
-*(Execute ONLY after PASS approval)*
-
-**CRITICAL**: Read `profile/CORE.md` before asking a single question. If this file does not exist, abort and tell the user to run `/profile` first. Surface the CORE's [C]alling explicitly so the interrogation is grounded (e.g., *"Based on your Calling as someone who [X], I want to find the moments where that Calling was most severely tested"*).
-
----
-
-## Step 3: Multi-Round Interrogation
-
-Ask the user for 3 milestones. For each one, run the following sequence rather than accepting a single answer:
-
-**Opening probe:** *"Tell me about a time when you were genuinely stretched. A project, crisis, or context where the outcome was uncertain and you had to use something beyond your formal job description to survive."*
-
-**Depth probes per milestone** (ask in sequence if the opening answer is shallow):
-1. *"What was the specific constraint? What resource, authority, or time were you missing?"*
-2. *"What did everyone else think would happen? What did you see differently?"*
-3. *"What number tells the story? What metric moved, and by how much?"*
-4. *"What is the reusable pattern you extracted from this? Has it appeared again?"*
-
----
-
-## Step 4: Synthesis Framework (STORY)
-
-Synthesize each milestone into an Experience Ledger entry using the **STORY** framework. Target: 50-80 words per letter.
-
-- **[S]ituation** (Baseline reality before they acted): Name the industry context, company scale, the specific function involved, and the pre-existing state of dysfunction or opportunity. Use specific numbers where possible (e.g., ARR, team size, timeline).
-- **[T]ask** (The directive): State the explicit mandate or the self-assigned problem. Name who assigned it and what the success definition was at the outset.
-- **[O]bstacle** (The complexity): Name the specific human, technical, political, or resource constraint that made this genuinely hard. This is NOT "it was busy." This is a named antagonist or structural failure.
-- **[R]esult** (The output): Lead with the quantified corporate outcome. Revenue saved/earned, time compressed, headcount retained, risk avoided. Do not use vague language ("improved"). Use numbers, ratios, or comparative benchmarks.
-- **[Y]ield** (The compounding internal capability): This is the most important letter. What permanent behavioral or cognitive change did this episode produce? Name the reusable pattern, methodology, or mental model the person now carries.
-
-**Quality gate**: The Yield must pass two tests:
-1. It must describe a capability that did NOT exist before the milestone.
-2. It must be specific enough that you could train someone else on it.
-
----
-
-## Step 5: Mandatory Persist
-
-**File:** `experience/[milestone-slug].md` (use a human-readable slug, not a timestamp-only name)
-
-**Header format:**
-```
-# [Role/Domain]: Experience Ledger
-
-**Timestamp**: YYYY-MM-DD
-**Framework**: EXPERIENCE (S.T.O.R.Y.)
-**Domain**: [Domain (Specific Role)]
-**Milestone**: [Milestone Name]
-**Produced by**: /experience
-**Reads from**: profile/CORE.md
-**Feeds into**: /strategise, /narrate
+```bash
+/experience [resume.pdf]          # Parse standard resume into STORY format
+/experience --project [name]      # Extract STORY for a specific initiative
+/experience --aggregate           # Synthesize all STORY entries into a master ledger
 ```
 
-Report to the user:
-- "EXPERIENCE milestone logged."
-- "Saved to `experience/[filename].md`."
-- "Milestones logged: [N] of 3."
-- **"Next step: Run `/resonate`."**
+---
+
+## The EXPERIENCE Protocol
+
+### 00 , Session Lifecycle (Harness)
+
+**Before doing anything else**, read `AGENTS.md` and `progress.md` (if it exists) to understand the current execution state. You must update `progress.md` with your status before ending the session.
+
+### S , Situation
+
+Establish the context. What was the environment, the stakes, and the baseline?
+Map the initial state before intervention.
+
+### T , Task
+
+Define the specific mandate or the assumed responsibility.
+What was the required action? Separate the mandate from the noise.
+
+### O , Obstacle
+
+Identify the friction. What was preventing success?
+Focus on systemic, human, or technical resistance. Avoid superficial blockers.
+
+### R , Result
+
+State the immediate outcome. Did the intervention succeed or fail?
+Quantify the change. Use hard metrics where possible.
+
+### Y , Yield
+
+Extract the compounding value. What permanent capability was acquired?
+Results are temporary; Yield is the wisdom or asset that survives the project.
 
 ---
 
-> **Voice compliance**: All synthesized output MUST pass the rules in `../../VOICE_STANDARD.md` before persisting. Run `/audit --voice` if in doubt.
+## Output Report
+
+Provide a structured report upon completion:
+
+```markdown
+✅ EXPERIENCE complete for [Target]
+📄 Artifacts generated:
+  - path/to/output_1.md
+  - path/to/output_2.yaml
+📊 Key Metrics: [Relevance/Impact/Score]
+✓  Validation: [PASS/WARNINGS/ERRORS]
+💾 Committed: [commit hash]
+```
+
+### 💾 Mandatory Persist (State Handoff)
+
+> **CRITICAL RULE**: Do not rely on chat context to pass state to the next workflow. 
+
+Every workflow execution MUST persist its output to a physical artifact in the repository. This artifact serves as the uncorrupted input for the next verb in the sequence. 
+
+- **If an appropriate directory exists**, save it there (e.g., `operations/spar/`, `2-research/`).
+- **If no directory is defined**, save it to `.agent/scratch/` or `operations/queues/` with a descriptive timestamped filename.
+- Conclude your chat response by explicitly providing the **Artifact URI** to the user so they can trigger the next workflow targeting that precise path.
