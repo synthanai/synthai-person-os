@@ -1,66 +1,90 @@
-# POSTURE
+---
+description: "Identity calibration: Profile, Orient, Shape, Tailor, Unify, Refine, Express."
+verb_orbit: Contribution
+---
 
-**Orbit:** Contribution
-**Action Sequence:** Profile, Orient, Shape, Tailor, Unify, Refine, Express
+> **EDITORIAL**: No em-dashes. Use commas, colons, or parentheses instead.
+
+# /posture , Profile, Orient, Shape, Tailor, Unify, Refine, Express.
+
+> **நூல்**: **WHY** , Translate raw capability into resonant external authority | **WHAT TYPE** , POSITIONING & IDENTITY | **HOW** , Profile → Orient → Shape → Tailor → Unify → Refine → Express
+
+*POSTURE* is a core verb in the **Contribution** orbit of the ARC TORUS.
 
 ---
 
-## Purpose
-
-Identity calibration. Profile the current state, orient toward the audience, shape the message, tailor to context, unify voice and substance, refine iteratively, and express.
-
-## When to Use
-
-Use POSTURE when you need to produce output and contribute value.
-
-## The Cycle
-
-### 1. Profile
-
-*What you do at this stage of the POSTURE cycle.*
+> [!CAUTION]
+> **QUALITY MANDATE (NON-NEGOTIABLE)**
+>
+> Every POSTURE execution MUST follow the explicit steps below. Skipping steps leads to shallow execution. The framework is the constraint that produces the depth.
 
 ---
 
-### 2. Orient
+## Usage
 
-*What you do at this stage of the POSTURE cycle.*
-
----
-
-### 3. Shape
-
-*What you do at this stage of the POSTURE cycle.*
-
----
-
-### 4. Tailor
-
-*What you do at this stage of the POSTURE cycle.*
+```bash
+/posture [target]                        # Standard execution
+/posture [target] --deep                 # High-fidelity, slow execution
+/posture [target] --batch                # Apply across multiple targets
+/posture --status                        # Check pending queue
+```
 
 ---
 
-### 5. Unify
+## The POSTURE Protocol
 
-*What you do at this stage of the POSTURE cycle.*
+### 00 , Session Lifecycle (Harness)
+
+**Before doing anything else**, read `AGENTS.md` and `progress.md` (if it exists) to understand the current execution state. You must update `progress.md` with your status before ending the session.
+
+### P , Profile
+
+Assess your current MINE state (Potent, Talent, Fluent, Latent).
+
+### O , Orient
+
+Determine the target audience and their specific needs.
+
+### S , Shape
+
+Mold your core message to fit the audience's worldview.
+
+### T , Tailor
+
+Adjust the tone, vocabulary, and medium.
+
+### U , Unify
+
+Ensure your external expression matches your internal truth (Mind, Body, Soul).
+
+### R , Refine
+
+Iteratively polish the delivery. Remove friction.
+
+### E , Express
+
+Deliver the message with calibrated authority.
 
 ---
 
-### 6. Refine
+## Output Report
 
-*What you do at this stage of the POSTURE cycle.*
+Provide a structured report upon completion:
 
----
+```
+✅ {verb.upper()} complete for [Target]
+📄 Artifacts generated: [List paths]
+📊 Key Metrics: [Relevance/Impact/Score]
+✓  Validation: [PASS/WARNINGS/ERRORS]
+💾 Committed: [commit hash]
+```
 
-### 7. Express
+### 💾 Mandatory Persist (State Handoff)
 
-*What you do at this stage of the POSTURE cycle.*
+> **CRITICAL RULE**: Do not rely on chat context to pass state to the next workflow. 
 
----
+Every workflow execution MUST persist its output to a physical artifact in the repository. This artifact serves as the uncorrupted input for the next verb in the sequence. 
 
-## Integration
-
-POSTURE connects to the broader ARC TORUS through the Contribution orbit. Its outputs feed into the Awareness orbit, completing the cycle.
-
----
-
-*Part of the SYNTHAI Person-OS cognitive framework.*
+- **If an appropriate directory exists**, save it there (e.g., `operations/spar/`, `2-research/`).
+- **If no directory is defined**, save it to `.agent/scratch/` or `operations/queues/` with a descriptive timestamped filename.
+- Conclude your chat response by explicitly providing the **Artifact URI** to the user so they can trigger the next workflow targeting that precise path.

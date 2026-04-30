@@ -49,8 +49,22 @@ Each verb has a corresponding workflow file in the `workflows/` directory:
 | COMPARE | Reasoning | Group, Align, Track, Harmonize, Evaluate, Resolve | [compare.md](workflows/compare.md) |
 | POSTURE | Contribution | Profile, Orient, Shape, Tailor, Unify, Refine, Express | [posture.md](workflows/posture.md) |
 | FORGE | Contribution | Formulate, Organize, Render, Gauge, Execute | [forge.md](workflows/forge.md) |
-| TEACH | Contribution | Tailor, Empathize, Anchor, Challenge, Help | [teach.md](workflows/teach.md) |
-| MENTOR | Contribution | Model, Empathize, Nurture, Tune, Observe, Release | [mentor.md](workflows/mentor.md) |
+| TEACH | Contribution | Knowledge transfer | [teach.md](workflows/teach.md) |
+| MENTOR | Contribution | Long-arc guidance | [mentor.md](workflows/mentor.md) |
+
+## Legacy & Professional Pathways
+
+Person-OS also includes legacy professional workflows mapped to specific frameworks (CORE, STORY, NETWORK, GROWTH, RHYTHM, SOCIAL). These are maintained as a specialized pathway:
+
+| Verb | Framework | Category | Workflow |
+|------|-----------|----------|----------|
+| `/profile` | **CORE** (Calling, Origin, Reason, Endurance) | Identity Foundation | [profile.md](workflows/professional/profile.md) |
+| `/experience`| **STORY** (Situation, Task, Obstacle, Result, Yield) | Capability Ledger | [experience.md](workflows/professional/experience.md) |
+| `/resonate` | **NETWORK** (Node, Exchange, Trust, Worth, Obligation, Reciprocity, Kinship) | Human Topology | [resonate.md](workflows/professional/resonate.md) |
+| `/strategise`| **GROWTH** (Goal, Reality, Obstacle, Waypoint, Tactics, Horizon) | Directed Vectors | [strategise.md](workflows/professional/strategise.md) |
+| `/operate` | **RHYTHM** (Ritual, Habitat, Yield, Tracking, Halt, Momentum) | Execution Engine | [operate.md](workflows/professional/operate.md) |
+| `/narrate` | **SOCIAL** (Story, Operations, Contrast, Instruction, Adversarial, Legacy) | Pitch and Positioning | [narrate.md](workflows/professional/narrate.md) |
+| `/person` | **PIC** (Persona, Interface, Compass) | AI Partner Blueprint | [person.md](workflows/professional/person.md) |
 
 ## Philosophy
 

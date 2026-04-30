@@ -1,66 +1,86 @@
-# GATHER
+---
+description: "Comparative analysis: Calibrate, Observe, Map, Polarize, Analyze, Recommend, Extract."
+verb_orbit: Reasoning
+---
 
-**Orbit:** Reasoning
-**Action Sequence:** Calibrate, Observe, Map, Polarize, Analyze, Recommend, Extract
+> **EDITORIAL**: No em-dashes. Use commas, colons, or parentheses instead.
+
+# /gather , Calibrate, Observe, Map, Polarize, Analyze, Recommend, Extract.
+
+> **நூல்**: **WHY** , Evaluate multiple entities horizontally to find the definitive path | **WHAT TYPE** , HORIZONTAL EVALUATION | **HOW** , Calibrate → Observe → Map → Polarize → Analyze → Recommend → Extract
+
+*GATHER* is a core verb in the **Reasoning** orbit of the ARC TORUS.
 
 ---
 
-## Purpose
-
-Comparative analysis. Calibrate your frame of reference, observe the landscape, map positions, polarize to surface tensions, analyze trade-offs, recommend a path, and extract the decision.
-
-## When to Use
-
-Use GATHER when you need to compress and reason through complexity.
-
-## The Cycle
-
-### 1. Calibrate
-
-*What you do at this stage of the GATHER cycle.*
+> [!CAUTION]
+> **QUALITY MANDATE (NON-NEGOTIABLE)**
+>
+> Every GATHER execution MUST follow the explicit steps below. Skipping steps leads to shallow execution. The framework is the constraint that produces the depth.
 
 ---
 
-### 2. Observe
+## Usage
 
-*What you do at this stage of the GATHER cycle.*
-
----
-
-### 3. Map
-
-*What you do at this stage of the GATHER cycle.*
-
----
-
-### 4. Polarize
-
-*What you do at this stage of the GATHER cycle.*
+```bash
+/gather [target]                        # Standard execution
+/gather [target] --deep                 # High-fidelity, slow execution
+/gather [target] --batch                # Apply across multiple targets
+/gather --status                        # Check pending queue
+```
 
 ---
 
-### 5. Analyze
+## The GATHER Protocol
 
-*What you do at this stage of the GATHER cycle.*
+### 00 , Session Lifecycle (Harness)
+
+**Before doing anything else**, read `AGENTS.md` and `progress.md` (if it exists) to understand the current execution state. You must update `progress.md` with your status before ending the session.
+
+### G , Calibrate
+
+Set the dimensions of comparison. What metrics matter?
+
+### A , Observe
+
+Gather data on all entities across the chosen dimensions.
+
+### T , Map
+
+Place the entities on a comparative matrix.
+
+### H , Polarize
+
+Force distinction. What makes A fundamentally different from B?
+
+### E , Analyze
+
+Assess the trade-offs, strengths, and critical gaps.
+
+### R , Recommend
+
+Propose the winning entity or the necessary hybrid.
 
 ---
 
-### 6. Recommend
+## Output Report
 
-*What you do at this stage of the GATHER cycle.*
+Provide a structured report upon completion:
 
----
+```
+✅ {verb.upper()} complete for [Target]
+📄 Artifacts generated: [List paths]
+📊 Key Metrics: [Relevance/Impact/Score]
+✓  Validation: [PASS/WARNINGS/ERRORS]
+💾 Committed: [commit hash]
+```
 
-### 7. Extract
+### 💾 Mandatory Persist (State Handoff)
 
-*What you do at this stage of the GATHER cycle.*
+> **CRITICAL RULE**: Do not rely on chat context to pass state to the next workflow. 
 
----
+Every workflow execution MUST persist its output to a physical artifact in the repository. This artifact serves as the uncorrupted input for the next verb in the sequence. 
 
-## Integration
-
-GATHER connects to the broader ARC TORUS through the Reasoning orbit. Its outputs feed into the Contribution orbit for output.
-
----
-
-*Part of the SYNTHAI Person-OS cognitive framework.*
+- **If an appropriate directory exists**, save it there (e.g., `operations/spar/`, `2-research/`).
+- **If no directory is defined**, save it to `.agent/scratch/` or `operations/queues/` with a descriptive timestamped filename.
+- Conclude your chat response by explicitly providing the **Artifact URI** to the user so they can trigger the next workflow targeting that precise path.

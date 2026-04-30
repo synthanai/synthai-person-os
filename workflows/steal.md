@@ -1,54 +1,84 @@
-# STEAL
+---
+description: "Intelligence capture: Scan, Translate, Evaluate, Abstract, Leverage."
+verb_orbit: Awareness
+---
 
-**Orbit:** Awareness
-**Action Sequence:** Scan, Translate, Evaluate, Abstract, Leverage
+> **EDITORIAL**: No em-dashes. Use commas, colons, or parentheses instead.
+
+# /steal , Scan, Translate, Evaluate, Abstract, Leverage.
+
+> **நூல்**: **WHY** , Build the evidence base that grounds every SYNTHAI claim | **WHAT TYPE** , INTELLIGENCE CAPTURE | **HOW** , Scan → Translate → Evaluate → Abstract → Leverage
+
+*STEAL* is a core verb in the **Awareness** orbit of the ARC TORUS.
 
 ---
 
-## Purpose
-
-External intelligence capture. Systematically scan sources, translate raw signal into your cognitive vocabulary, evaluate relevance, abstract patterns, and leverage insights.
-
-## When to Use
-
-Use STEAL when you need to intake and capture external intelligence.
-
-## The Cycle
-
-### 1. Scan
-
-*What you do at this stage of the STEAL cycle.*
+> [!CAUTION]
+> **QUALITY MANDATE (NON-NEGOTIABLE)**
+>
+> Every STEAL execution MUST follow the explicit steps below. Skipping steps leads to shallow execution. The framework is the constraint that produces the depth.
 
 ---
 
-### 2. Translate
+## Usage
 
-*What you do at this stage of the STEAL cycle.*
-
----
-
-### 3. Evaluate
-
-*What you do at this stage of the STEAL cycle.*
-
----
-
-### 4. Abstract
-
-*What you do at this stage of the STEAL cycle.*
+```bash
+/steal [target]                        # Standard execution
+/steal [target] --deep                 # High-fidelity, slow execution
+/steal [target] --batch                # Apply across multiple targets
+/steal --status                        # Check pending queue
+```
 
 ---
 
-### 5. Leverage
+## The STEAL Protocol
 
-*What you do at this stage of the STEAL cycle.*
+### 00 , Session Lifecycle (Harness)
+
+**Before doing anything else**, read `AGENTS.md` and `progress.md` (if it exists) to understand the current execution state. You must update `progress.md` with your status before ending the session.
+
+### S , Scan
+
+Survey the external landscape for relevant signals, avoiding echo chambers. Cast a wide net across diverse domains.
+
+> **Execution Note**: Utilize external scraping and headless browsers when required. Avoid hallucination.
+
+### T , Translate
+
+Convert raw signal into SYNTHAI cognitive vocabulary (MBS, ARC, MINE). Refine the terminology.
+
+### E , Evaluate
+
+Assess relevance, credibility, and novelty. Check schema compliance and domain coverage.
+
+### A , Abstract
+
+Extract transferable patterns from specific instances. Document NOOL (Intent, Abstraction, Chain) and actionable signals.
+
+### L , Leverage
+
+Apply patterns to the current SYNTHAI context. Route backlog candidates and update the intelligence index.
 
 ---
 
-## Integration
+## Output Report
 
-STEAL connects to the broader ARC TORUS through the Awareness orbit. Its outputs feed into the Reasoning orbit for compression.
+Provide a structured report upon completion:
 
----
+```
+✅ {verb.upper()} complete for [Target]
+📄 Artifacts generated: [List paths]
+📊 Key Metrics: [Relevance/Impact/Score]
+✓  Validation: [PASS/WARNINGS/ERRORS]
+💾 Committed: [commit hash]
+```
 
-*Part of the SYNTHAI Person-OS cognitive framework.*
+### 💾 Mandatory Persist (State Handoff)
+
+> **CRITICAL RULE**: Do not rely on chat context to pass state to the next workflow. 
+
+Every workflow execution MUST persist its output to a physical artifact in the repository. This artifact serves as the uncorrupted input for the next verb in the sequence. 
+
+- **If an appropriate directory exists**, save it there (e.g., `operations/spar/`, `2-research/`).
+- **If no directory is defined**, save it to `.agent/scratch/` or `operations/queues/` with a descriptive timestamped filename.
+- Conclude your chat response by explicitly providing the **Artifact URI** to the user so they can trigger the next workflow targeting that precise path.

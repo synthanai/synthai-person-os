@@ -1,66 +1,92 @@
-# SPARKIT
+---
+description: "Structured dialectic: Scope, Populate, Announce, Rumble, Knit, Interrogate, Transmit."
+verb_orbit: Reasoning
+---
 
-**Orbit:** Reasoning
-**Action Sequence:** Scope, Populate, Announce, Rumble, Knit, Interrogate, Transmit
+> **EDITORIAL**: No em-dashes. Use commas, colons, or parentheses instead.
+
+# /sparkit , Scope, Populate, Announce, Rumble, Knit, Interrogate, Transmit.
+
+> **நூல்**: **WHY** , Stress-test decisions through adversarial and connective multi-agent debate | **WHAT TYPE** , DIALECTIC REASONING | **HOW** , Scope → Populate → Announce → Rumble → Knit → Interrogate → Transmit
+
+*SPARKIT* is a core verb in the **Reasoning** orbit of the ARC TORUS.
 
 ---
 
-## Purpose
-
-Structured dialectic. Scope the question, populate with diverse perspectives, announce the challenge, rumble through multi-round debate, knit a synthesis, interrogate the result, and transmit the verdict.
-
-## When to Use
-
-Use SPARKIT when you need to compress and reason through complexity.
-
-## The Cycle
-
-### 1. Scope
-
-*What you do at this stage of the SPARKIT cycle.*
+> [!CAUTION]
+> **QUALITY MANDATE (NON-NEGOTIABLE)**
+>
+> Every SPARKIT execution MUST follow the explicit steps below. Skipping steps leads to shallow execution. The framework is the constraint that produces the depth.
 
 ---
 
-### 2. Populate
+## Usage
 
-*What you do at this stage of the SPARKIT cycle.*
-
----
-
-### 3. Announce
-
-*What you do at this stage of the SPARKIT cycle.*
-
----
-
-### 4. Rumble
-
-*What you do at this stage of the SPARKIT cycle.*
+```bash
+/sparkit [target]                        # Standard execution
+/sparkit [target] --deep                 # High-fidelity, slow execution
+/sparkit [target] --batch                # Apply across multiple targets
+/sparkit --status                        # Check pending queue
+```
 
 ---
 
-### 5. Knit
+## The SPARKIT Protocol
 
-*What you do at this stage of the SPARKIT cycle.*
+### 00 , Session Lifecycle (Harness)
+
+**Before doing anything else**, read `AGENTS.md` and `progress.md` (if it exists) to understand the current execution state. You must update `progress.md` with your status before ending the session.
+
+### S , Scope
+
+Define the precise, tension-maximizing question. No vague inquiries.
+
+### P , Populate
+
+Select intellectually diverse personas from the research corpus.
+
+### A , Announce
+
+State the rules of engagement and the starting positions.
+
+### R , Rumble
+
+Execute multi-round debate. Surface tensions, challenge assumptions, steelman arguments.
+
+> **Execution Note**: Ensure strict adherence to the SPARKIT dialectic multi-round format. Do not summarize the debate.
+
+### K , Knit
+
+Find the synthesis. Where do the divergent paths converge?
+
+### I , Interrogate
+
+Question the synthesis itself. Is it robust, or just a compromise?
+
+### T , Transmit
+
+Output the final decision, the core tensions, and the ultimate test.
 
 ---
 
-### 6. Interrogate
+## Output Report
 
-*What you do at this stage of the SPARKIT cycle.*
+Provide a structured report upon completion:
 
----
+```
+✅ {verb.upper()} complete for [Target]
+📄 Artifacts generated: [List paths]
+📊 Key Metrics: [Relevance/Impact/Score]
+✓  Validation: [PASS/WARNINGS/ERRORS]
+💾 Committed: [commit hash]
+```
 
-### 7. Transmit
+### 💾 Mandatory Persist (State Handoff)
 
-*What you do at this stage of the SPARKIT cycle.*
+> **CRITICAL RULE**: Do not rely on chat context to pass state to the next workflow. 
 
----
+Every workflow execution MUST persist its output to a physical artifact in the repository. This artifact serves as the uncorrupted input for the next verb in the sequence. 
 
-## Integration
-
-SPARKIT connects to the broader ARC TORUS through the Reasoning orbit. Its outputs feed into the Contribution orbit for output.
-
----
-
-*Part of the SYNTHAI Person-OS cognitive framework.*
+- **If an appropriate directory exists**, save it there (e.g., `operations/spar/`, `2-research/`).
+- **If no directory is defined**, save it to `.agent/scratch/` or `operations/queues/` with a descriptive timestamped filename.
+- Conclude your chat response by explicitly providing the **Artifact URI** to the user so they can trigger the next workflow targeting that precise path.
