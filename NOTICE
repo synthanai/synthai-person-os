@@ -1,0 +1,19 @@
+NOTICE
+
+This repository contains the visual architecture layer of the SYNTHAI TORUS-MINE
+cognitive framework. It is released under the MIT License.
+
+The following components are NOT included in this repository and remain proprietary
+to SYNTHAI:
+
+- GEM Taxonomy (cognitive gem classification matrix)
+- MINE Matrix calibration data and algorithms
+- TESSERACT profile schemas and verified identity profiles
+- Verb Engine execution directives and action phrases
+- Healing Arc architecture
+- ARANGAM platform source code
+
+These components are available through the SYNTHAI ARC programme (cohort-based)
+or the SYNTHAI ARCH OS platform.
+
+Copyright (c) 2026 Naveen Riaz Mohamed Kani / SYNTHAI
