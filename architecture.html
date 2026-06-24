@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SYNTHAI: Unified System Architecture</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #0A0F15;
+            color: #F3F4F6;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 40px 2vw 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .section-header {
+            text-align: center;
+            margin: 80px 0 40px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 60px;
+            width: 100%;
+        }
+        .header h1, .section-header h2 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            background: linear-gradient(90deg, #3B82F6, #D4AF37, #10B981);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        .header h1 { font-size: 108px; }
+        .section-header h2 { font-size: 66px; color: #FFFFFF; -webkit-text-fill-color: initial; background: none; }
+        
+        .header p, .section-header p {
+            font-family: 'Outfit', sans-serif;
+            color: #9CA3AF;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        /* Fully Responsive Grids */
+        .canvas-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .fractal-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 1200px) {
+            .canvas-container { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 1100px) {
+            .header h1 { font-size: 72px; }
+            .section-header h2 { font-size: 48px; }
+            .card h3 { font-size: 28px; }
+        }
+        @media (max-width: 900px) {
+            .fractal-container { grid-template-columns: 1fr; }
+            .empty-col { display: none; }
+            .header h1 { font-size: 56px; }
+            .section-header h2 { font-size: 36px; }
+            .card h3 { font-size: 24px; }
+        }
+        @media (max-width: 600px) {
+            body { padding: 20px 10px 50px; }
+            .header h1 { font-size: 36px; }
+            .section-header h2 { font-size: 24px; }
+            .card h3 { font-size: 16px; }
+        }
+
+        .card {
+            background: #111823;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 20px 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            box-sizing: border-box;
+            width: 100%;
+            overflow: hidden; /* prevents stretching issues if svgs burst out significantly */
+        }
+        .card h3 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            letter-spacing: 4px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            font-size: 36px;
+            color: #FFFFFF;
+            text-align: center;
+        }
+        .card p.subtitle {
+            font-family: 'Outfit', sans-serif;
+            color: #0ea5e9;
+            font-size: 14px;
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            text-align: center;
+        }
+        .card.genesis p.subtitle { color: #10B981; } /* Awareness */
+        .card.flight p.subtitle { color: #3B82F6; } /* Reasoning */
+        .card.torus p.subtitle { color: #D4AF37; } /* Contribution */
+        .empty-col { display: block; }
+        
+        .card p.desc {
+            color: #9CA3AF;
+            font-size: 14px;
+            text-align: center;
+            margin-top: 25px;
+            line-height: 1.6;
+            font-weight: 400;
+            z-index: 10;
+        }
+        
+        svg {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            overflow: visible; /* CRITICAL requirement for bursting radial text */
+        }
+
+        /* ARC SVG Styling */
+        .core-text-main { font-family: 'Outfit', sans-serif; font-weight: 800; text-anchor: middle; fill: #FFFFFF; letter-spacing: 3px; font-size: 24px; }
+        .core-text-sub { font-family: 'Outfit', sans-serif; font-weight: 600; text-anchor: middle; fill: #94A3B8; letter-spacing: 4px; font-size: 16px; }
+        .arc-text { font-family: 'Outfit', sans-serif; font-weight: 700; text-anchor: middle; fill: #0A0F15; font-size: 16px; letter-spacing: 3px; }
+        .verb-text { font-family: 'Outfit', sans-serif; font-weight: 700; fill: #0A0F15; font-size: 16px; letter-spacing: 2px; }
+        .framework-word { font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; }
+        
+        .arc-slice { stroke: #0A0F15; stroke-width: 2px; }
+        .verb-slice { stroke: #0A0F15; stroke-width: 2px; opacity: 0.9; }
+        
+        .radial-line { stroke: rgba(255,255,255,0.15); stroke-width: 1px; stroke-dasharray: 4 4; }
+        .radial-line-alt { stroke: rgba(255,255,255,0.2); stroke-width: 1px; stroke-dasharray: 2 4; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>SYNTHAI ARCH</h1>
+        <p>The Anatomy of Awareness, Reasoning, Contribution & Healing</p>
+    </div>
+
+    <!-- LEVEL 0: The Core Engine -->
+    <div class="fractal-container">
+        
+        <!-- CARD 1: SMBS TRINITY -->
+        <div class="card genesis">
+            <h3>Ontology</h3>
+            <p class="subtitle">Anatomy of Awareness</p>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080">
+                <defs>
+                    <filter id="glow1" x="-20%" y="-20%" width="140%" height="140%">
+                        <feGaussianBlur stdDeviation="8" result="blur" />
+                        <feMerge>
+                            <feMergeNode in="blur" />
+                            <feMergeNode in="SourceGraphic" />
+                        </feMerge>
+                    </filter>
+                    <linearGradient id="auraFillGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.0"/>
+                        <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.5"/>
+                    </linearGradient>
+                </defs>
+                <rect width="1080" height="1080" fill="#111823" rx="12"/>
+                <!-- Scaled coordinates based on 1080x1080 -->
+                <g stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.5" style="filter: url(#glow1);" stroke-dasharray="6 12">
+                     <path d="M 378,378 Q 324,310 243,270" />
+                     <path d="M 432,351 Q 391,256 324,162" />
+                     <path d="M 486,324 Q 472,202 432,81" />
+                     <path d="M 540,310 L 540,27" />
+                     <path d="M 594,324 Q 607,202 648,81" />
+                     <path d="M 648,351 Q 688,256 756,162" />
+                     <path d="M 702,378 Q 756,310 837,270" />
+                </g>
+                <polygon points="378,445 702,445 540,607" fill="url(#auraFillGrad)" opacity="0.8"/>
+                <polygon points="378,445 540,607 378,769 216,607" stroke="#3B82F6" stroke-width="2" fill="#3B82F6" fill-opacity="0.08" style="filter: url(#glow1);"/>
+                <polygon points="702,445 864,607 702,769 540,607" stroke="#10B981" stroke-width="2" fill="#10B981" fill-opacity="0.08" style="filter: url(#glow1);"/>
+                <polygon points="540,607 702,769 540,931 378,769" stroke="#D4AF37" stroke-width="2" fill="#D4AF37" fill-opacity="0.08" style="filter: url(#glow1);"/>
+                <circle cx="378" cy="445" r="7" fill="#3B82F6"/>
+                <circle cx="702" cy="445" r="7" fill="#10B981"/>
+                <circle cx="216" cy="607" r="7" fill="#3B82F6"/>
+                <circle cx="864" cy="607" r="7" fill="#10B981"/>
+                <circle cx="540" cy="607" r="7" fill="#D4AF37" style="filter: url(#glow1);"/>
+                <circle cx="540" cy="931" r="7" fill="#D4AF37"/>
+                <circle cx="378" cy="769" r="7" fill="#D4AF37"/>
+                <circle cx="702" cy="769" r="7" fill="#D4AF37"/>
+                <g font-family="Outfit" text-anchor="middle" font-weight="600" fill="#F3F4F6">
+                    <text x="540" y="783" font-size="36" letter-spacing="4">Soul</text>
+                    <text x="364" y="621" font-size="36" letter-spacing="4">Mind</text>
+                    <text x="715" y="621" font-size="36" letter-spacing="4">Body</text>
+                    <text x="540" y="459" font-size="32" letter-spacing="8" fill="#FFFFFF" font-weight="800" opacity="0.9">SPIRIT</text>
+                    <text x="540" y="189" font-size="54" letter-spacing="14" fill="#FFFFFF" font-weight="800" style="filter: url(#glow1);" opacity="0.9">AURA</text>
+                </g>
+            </svg>
+            <p class="desc">Soul anchors gravity at the bottom. Mind and Body act as operating wings. SPIRIT pools dynamically as the unmapped atmospheric gap between them, emitting the AURA.</p>
+        </div>
+
+        <!-- CARD 2: MINE MATRIX -->
+        <div class="card flight">
+            <h3>Epistemology</h3>
+            <p class="subtitle">Anatomy of Reasoning</p>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080">
+                <defs>
+                    <filter id="glow2" x="-20%" y="-20%" width="140%" height="140%">
+                        <feGaussianBlur stdDeviation="8" result="blur" />
+                        <feMerge>
+                            <feMergeNode in="blur" />
+                            <feMergeNode in="SourceGraphic" />
+                        </feMerge>
+                    </filter>
+                    <linearGradient id="latentFillGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.5"/>
+                        <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.0"/>
+                    </linearGradient>
+                </defs>
+                <rect width="1080" height="1080" fill="#111823" rx="12"/>
+                 <g stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.5" style="filter: url(#glow2);" stroke-dasharray="6 12">
+                     <path d="M 378,418 Q 324,310 243,270" />
+                     <path d="M 432,364 Q 405,243 324,162" />
+                     <path d="M 486,310 Q 486,189 432,81" />
+                     <path d="M 540,256 L 540,27" />
+                     <path d="M 594,310 Q 594,189 648,81" />
+                     <path d="M 648,364 Q 675,243 756,162" />
+                     <path d="M 702,418 Q 756,310 837,270" />
+                </g>
+                <polygon points="378,445 540,607 378,769 216,607" stroke="#3B82F6" stroke-width="2" fill="#3B82F6" fill-opacity="0.08" style="filter: url(#glow2);"/>
+                <polygon points="702,445 864,607 702,769 540,607" stroke="#10B981" stroke-width="2" fill="#10B981" fill-opacity="0.08" style="filter: url(#glow2);"/>
+                <polygon points="540,283 702,445 540,607 378,445" stroke="#D4AF37" stroke-width="2" fill="#D4AF37" fill-opacity="0.08" style="filter: url(#glow2);"/>
+                <polygon points="378,769 702,769 540,607" fill="url(#latentFillGrad)" opacity="0.8"/>
+                <circle cx="378" cy="769" r="7" fill="#3B82F6"/>
+                <circle cx="702" cy="769" r="7" fill="#10B981"/>
+                <circle cx="216" cy="607" r="7" fill="#3B82F6"/>
+                <circle cx="864" cy="607" r="7" fill="#10B981"/>
+                <circle cx="540" cy="607" r="7" fill="#D4AF37" style="filter: url(#glow2);"/>
+                <circle cx="540" cy="283" r="7" fill="#D4AF37"/>
+                <circle cx="378" cy="445" r="7" fill="#D4AF37"/>
+                <circle cx="702" cy="445" r="7" fill="#D4AF37"/>
+                <g font-family="Outfit" text-anchor="middle" fill="#F3F4F6">
+                    <text x="540" y="459" font-size="36" font-weight="600" letter-spacing="4">FLUENT</text>
+                    <text x="364" y="621" font-size="36" font-weight="600" letter-spacing="4">POTENT</text>
+                    <text x="715" y="621" font-size="36" font-weight="600" letter-spacing="4">TALENT</text>
+                    <text x="540" y="783" font-size="32" letter-spacing="8" fill="#FFFFFF" font-weight="800" opacity="0.9">LATENT</text>
+                    <text x="540" y="189" font-size="54" letter-spacing="14" fill="#FFFFFF" font-weight="800" style="filter: url(#glow2);" opacity="0.9">AURA</text>
+                </g>
+            </svg>
+            <p class="desc">Potent and Talent push upwards. Soul resolves into the peak "Fluent" state. The empty gap beneath forms the dormant Latent holding space.</p>
+        </div>
+
+
+        <div class="card torus">
+            <h3>Praxeology</h3>
+            <p class="subtitle">Anatomy of Contribution</p>
+            <svg id="arc-root" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080">
+                <rect width="1080" height="1080" fill="#111823" rx="12"/>
+                <g id="arc-group">
+    <path d="M 791.15 395.00 A 290 290 0 0 0 288.85 395.00 L 366.79 440.00 A 200 200 0 0 1 713.21 440.00 Z" fill="#D4AF37" class="arc-slice" />
+<path id="tp_1" d="M 327.82 417.50 A 245.0 245.0 0 0 1 752.18 417.50" fill="none" />
+<text class="arc-text" style="font-size: 21px; letter-spacing: 4px;" dominant-baseline="middle">
+    <textPath href="#tp_1" startOffset="50%" text-anchor="middle">CONTRIBUTION</textPath>
+</text>
+    <line x1="288.85" y1="395.00" x2="158.95" y2="320.00" class="radial-line"/>
+    <path d="M 320.00 158.95 A 440 440 0 0 0 158.95 320.00 L 236.89 365.00 A 350 350 0 0 1 365.00 236.89 Z" fill="#D4AF37" fill-opacity="0.1" stroke="#D4AF37" stroke-opacity="0.4" stroke-width="1" />
+<path id="tp_2" d="M 197.92 342.50 A 395.0 395.0 0 0 1 342.50 197.92" fill="none" />
+<text class="verb-text" style="fill: #D4AF37; font-size: 16px;" dominant-baseline="middle">
+    <textPath href="#tp_2" startOffset="50%" text-anchor="middle">POSTURE</textPath>
+</text>
+    <line x1="395.00" y1="288.85" x2="320.00" y2="158.95" class="radial-line"/>
+    <path d="M 540.00 100.00 A 440 440 0 0 0 320.00 158.95 L 365.00 236.89 A 350 350 0 0 1 540.00 190.00 Z" fill="#D4AF37" fill-opacity="0.1" stroke="#D4AF37" stroke-opacity="0.4" stroke-width="1" />
+<path id="tp_3" d="M 342.50 197.92 A 395.0 395.0 0 0 1 540.00 145.00" fill="none" />
+<text class="verb-text" style="fill: #D4AF37; font-size: 16px;" dominant-baseline="middle">
+    <textPath href="#tp_3" startOffset="50%" text-anchor="middle">FORGE</textPath>
+</text>
+    <line x1="540.00" y1="250.00" x2="540.00" y2="100.00" class="radial-line"/>
+    <path d="M 760.00 158.95 A 440 440 0 0 0 540.00 100.00 L 540.00 190.00 A 350 350 0 0 1 715.00 236.89 Z" fill="#D4AF37" fill-opacity="0.1" stroke="#D4AF37" stroke-opacity="0.4" stroke-width="1" />
+<path id="tp_4" d="M 540.00 145.00 A 395.0 395.0 0 0 1 737.50 197.92" fill="none" />
+<text class="verb-text" style="fill: #D4AF37; font-size: 16px;" dominant-baseline="middle">
+    <textPath href="#tp_4" startOffset="50%" text-anchor="middle">TEACH</textPath>
+</text>
+    <line x1="685.00" y1="288.85" x2="760.00" y2="158.95" class="radial-line"/>
+    <path d="M 921.05 320.00 A 440 440 0 0 0 760.00 158.95 L 715.00 236.89 A 350 350 0 0 1 843.11 365.00 Z" fill="#D4AF37" fill-opacity="0.1" stroke="#D4AF37" stroke-opacity="0.4" stroke-width="1" />
+<path id="tp_5" d="M 737.50 197.92 A 395.0 395.0 0 0 1 882.08 342.50" fill="none" />
+<text class="verb-text" style="fill: #D4AF37; font-size: 16px;" dominant-baseline="middle">
+    <textPath href="#tp_5" startOffset="50%" text-anchor="middle">MENTOR</textPath>
+</text>
+    <path d="M 540.00 830.00 A 290 290 0 0 0 791.15 395.00 L 713.21 440.00 A 200 200 0 0 1 540.00 740.00 Z" fill="#10B981" class="arc-slice" />
+<path id="tp_6" d="M 540.00 785.00 A 245.0 245.0 0 0 0 752.18 417.50" fill="none" />
+<text class="arc-text" style="font-size: 21px; letter-spacing: 4px;" dominant-baseline="middle">
+    <textPath href="#tp_6" startOffset="50%" text-anchor="middle">AWARENESS</textPath>
+</text>
+    <line x1="791.15" y1="395.00" x2="921.05" y2="320.00" class="radial-line"/>
+    <path d="M 980.00 540.00 A 440 440 0 0 0 921.05 320.00 L 843.11 365.00 A 350 350 0 0 1 890.00 540.00 Z" fill="#10B981" fill-opacity="0.1" stroke="#10B981" stroke-opacity="0.4" stroke-width="1" />
+<path id="tp_7" d="M 882.08 342.50 A 395.0 395.0 0 0 1 935.00 540.00" fill="none" />
+<text class="verb-text" style="fill: #10B981; font-size: 16px;" dominant-baseline="middle">
+    <textPath href="#tp_7" startOffset="50%" text-anchor="middle">STEAL</textPath>
+</text>
+    <line x1="830.00" y1="540.00" x2="980.00" y2="540.00" class="radial-line"/>
+    <path d="M 921.05 760.00 A 440 440 0 0 0 980.00 540.00 L 890.00 540.00 A 350 350 0 0 1 843.11 715.00 Z" fill="#10B981" fill-opacity="0.1" stroke="#10B981" stroke-opacity="0.4" stroke-width="1" />
+<path id="tp_8" d="M 882.08 737.50 A 395.0 395.0 0 0 0 935.00 540.00" fill="none" />
+<text class="verb-text" style="fill: #10B981; font-size: 16px;" dominant-baseline="middle">
+    <textPath href="#tp_8" startOffset="50%" text-anchor="middle">REMIND</textPath>
+</text>
+    <line x1="791.15" y1="685.00" x2="921.05" y2="760.00" class="radial-line"/>
+    <path d="M 760.00 921.05 A 440 440 0 0 0 921.05 760.00 L 843.11 715.00 A 350 350 0 0 1 715.00 843.11 Z" fill="#10B981" fill-opacity="0.1" stroke="#10B981" stroke-opacity="0.4" stroke-width="1" />
+<path id="tp_9" d="M 737.50 882.08 A 395.0 395.0 0 0 0 882.08 737.50" fill="none" />
+<text class="verb-text" style="fill: #10B981; font-size: 16px;" dominant-baseline="middle">
+    <textPath href="#tp_9" startOffset="50%" text-anchor="middle">PROBE</textPath>
+</text>
+    <line x1="685.00" y1="791.15" x2="760.00" y2="921.05" class="radial-line"/>
+    <path d="M 540.00 980.00 A 440 440 0 0 0 760.00 921.05 L 715.00 843.11 A 350 350 0 0 1 540.00 890.00 Z" fill="#10B981" fill-opacity="0.1" stroke="#10B981" stroke-opacity="0.4" stroke-width="1" />
+<path id="tp_10" d="M 540.00 935.00 A 395.0 395.0 0 0 0 737.50 882.08" fill="none" />
+<text class="verb-text" style="fill: #10B981; font-size: 16px;" dominant-baseline="middle">
+    <textPath href="#tp_10" startOffset="50%" text-anchor="middle">LEARN</textPath>
+</text>
+    <path d="M 288.85 395.00 A 290 290 0 0 0 540.00 830.00 L 540.00 740.00 A 200 200 0 0 1 366.79 440.00 Z" fill="#3B82F6" class="arc-slice" />
+<path id="tp_11" d="M 327.82 417.50 A 245.0 245.0 0 0 0 540.00 785.00" fill="none" />
+<text class="arc-text" style="font-size: 21px; letter-spacing: 4px;" dominant-baseline="middle">
+    <textPath href="#tp_11" startOffset="50%" text-anchor="middle">REASONING</textPath>
+</text>
+    <line x1="540.00" y1="830.00" x2="540.00" y2="980.00" class="radial-line"/>
+    <path d="M 320.00 921.05 A 440 440 0 0 0 540.00 980.00 L 540.00 890.00 A 350 350 0 0 1 365.00 843.11 Z" fill="#3B82F6" fill-opacity="0.1" stroke="#3B82F6" stroke-opacity="0.4" stroke-width="1" />
+<path id="tp_12" d="M 342.50 882.08 A 395.0 395.0 0 0 0 540.00 935.00" fill="none" />
+<text class="verb-text" style="fill: #3B82F6; font-size: 16px;" dominant-baseline="middle">
+    <textPath href="#tp_12" startOffset="50%" text-anchor="middle">DIGEST</textPath>
+</text>
+    <line x1="395.00" y1="791.15" x2="320.00" y2="921.05" class="radial-line"/>
+    <path d="M 158.95 760.00 A 440 440 0 0 0 320.00 921.05 L 365.00 843.11 A 350 350 0 0 1 236.89 715.00 Z" fill="#3B82F6" fill-opacity="0.1" stroke="#3B82F6" stroke-opacity="0.4" stroke-width="1" />
+<path id="tp_13" d="M 197.92 737.50 A 395.0 395.0 0 0 0 342.50 882.08" fill="none" />
+<text class="verb-text" style="fill: #3B82F6; font-size: 16px;" dominant-baseline="middle">
+    <textPath href="#tp_13" startOffset="50%" text-anchor="middle">SPARKIT</textPath>
+</text>
+    <line x1="288.85" y1="685.00" x2="158.95" y2="760.00" class="radial-line"/>
+    <path d="M 100.00 540.00 A 440 440 0 0 0 158.95 760.00 L 236.89 715.00 A 350 350 0 0 1 190.00 540.00 Z" fill="#3B82F6" fill-opacity="0.1" stroke="#3B82F6" stroke-opacity="0.4" stroke-width="1" />
+<path id="tp_14" d="M 145.00 540.00 A 395.0 395.0 0 0 0 197.92 737.50" fill="none" />
+<text class="verb-text" style="fill: #3B82F6; font-size: 16px;" dominant-baseline="middle">
+    <textPath href="#tp_14" startOffset="50%" text-anchor="middle">GATHER</textPath>
+</text>
+    <line x1="250.00" y1="540.00" x2="100.00" y2="540.00" class="radial-line"/>
+    <path d="M 158.95 320.00 A 440 440 0 0 0 100.00 540.00 L 190.00 540.00 A 350 350 0 0 1 236.89 365.00 Z" fill="#3B82F6" fill-opacity="0.1" stroke="#3B82F6" stroke-opacity="0.4" stroke-width="1" />
+<path id="tp_15" d="M 145.00 540.00 A 395.0 395.0 0 0 1 197.92 342.50" fill="none" />
+<text class="verb-text" style="fill: #3B82F6; font-size: 16px;" dominant-baseline="middle">
+    <textPath href="#tp_15" startOffset="50%" text-anchor="middle">COMPARE</textPath>
+</text>
+    <circle cx="540" cy="540" r="140" fill="#0A0F15" stroke="rgba(255,255,255,0.05)" stroke-width="2" />
+    <text x="540" y="535" class="core-text-main" style="font-size: 33px;">ARC</text>
+    <text x="540" y="568" class="core-text-sub" style="font-size: 16px;">TORUS</text>
+</g>
+            </svg>
+            <p class="desc">The Master Orbit. Pure geometry representing the 3 Phases and 12 Acro-Verbs.</p>
+        </div>
+    </div>
+
+    <!-- LEVEL 1: Fractional Zoom -->
+    <div class="section-header" style="margin-bottom: 20px;">
+        <h2>Orbital Architecture</h2>
+        <p>Zooming into Orbit Nodes</p>
+    </div>
+
+    <div class="fractal-container">
+        
+        <!-- AWARENESS TORUS -->
+        <div class="card torus" style="margin-top: 0;">
+            <h3>Awareness Orbit</h3>
+            <p class="subtitle" style="color:#10B981;">Intake Coordinates</p>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080">
+                <rect width="1080" height="1080" fill="#111823" rx="12"/>
+                <g>
+    <circle cx="540" cy="540" r="360" fill="none" stroke="#10B981" stroke-opacity="0.3" stroke-width="2" stroke-dasharray="8 8" />
+    <circle cx="540" cy="540" r="100" fill="#111823" stroke="#10B981" stroke-width="3" />
+    <circle cx="540" cy="540" r="92" fill="#10B981" fill-opacity="0.1" />
+    <text x="540" y="537" class="core-text-main" style="fill: #10B981; font-size: 20px;">AWARENESS</text>
+    <text x="540" y="558" class="core-text-sub" style="font-size: 11px;">ORBIT</text>
+    <circle cx="794.56" cy="285.44" r="150" fill="none" stroke="#10B981" stroke-opacity="0.25" stroke-width="1.5" stroke-dasharray="4 6" />
+    <circle cx="900.62" cy="179.38" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#10B981" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="900.62" y="184.38" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #10B981; text-anchor: middle; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">Log</text>
+    <circle cx="928.21" cy="353.54" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#10B981" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="928.21" y="358.54" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #10B981; text-anchor: middle; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">Extract</text>
+    <circle cx="771.09" cy="433.59" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#10B981" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="771.09" y="438.59" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #10B981; text-anchor: middle; font-size: 13px; letter-spacing: 1px; text-transform: uppercase;">Assimilate</text>
+    <circle cx="646.41" cy="308.91" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#10B981" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="646.41" y="313.91" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #10B981; text-anchor: middle; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">Reflect</text>
+    <circle cx="726.46" cy="151.79" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#10B981" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="726.46" y="156.79" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #10B981; text-anchor: middle; font-size: 13px; letter-spacing: 1px; text-transform: uppercase;">Normalize</text>
+    <circle cx="794.56" cy="285.44" r="76" fill="#10B981" stroke="#0A0F15" stroke-width="5" />
+    <circle cx="794.56" cy="285.44" r="69" fill="#0A0F15" fill-opacity="0.3" />
+    <text x="794.56" y="292.44" class="verb-text" style="font-size: 20px; font-weight: 800; fill: #0A0F15; text-anchor: middle; letter-spacing: 3px;">LEARN</text>
+    <circle cx="794.56" cy="794.56" r="150" fill="none" stroke="#10B981" stroke-opacity="0.25" stroke-width="1.5" stroke-dasharray="4 6" />
+    <circle cx="900.62" cy="900.62" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#10B981" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="900.62" y="905.62" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #10B981; text-anchor: middle; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">Parse</text>
+    <circle cx="726.46" cy="928.21" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#10B981" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="726.46" y="933.21" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #10B981; text-anchor: middle; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">Reveal</text>
+    <circle cx="646.41" cy="771.09" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#10B981" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="646.41" y="776.09" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #10B981; text-anchor: middle; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">Observe</text>
+    <circle cx="771.09" cy="646.41" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#10B981" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="771.09" y="651.41" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #10B981; text-anchor: middle; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">Break</text>
+    <circle cx="928.21" cy="726.46" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#10B981" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="928.21" y="731.46" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #10B981; text-anchor: middle; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">Extract</text>
+    <circle cx="794.56" cy="794.56" r="76" fill="#10B981" stroke="#0A0F15" stroke-width="5" />
+    <circle cx="794.56" cy="794.56" r="69" fill="#0A0F15" fill-opacity="0.3" />
+    <text x="794.56" y="801.56" class="verb-text" style="font-size: 20px; font-weight: 800; fill: #0A0F15; text-anchor: middle; letter-spacing: 3px;">PROBE</text>
+    <circle cx="285.44" cy="794.56" r="150" fill="none" stroke="#10B981" stroke-opacity="0.25" stroke-width="1.5" stroke-dasharray="4 6" />
+    <circle cx="179.38" cy="900.62" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#10B981" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="179.38" y="905.62" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #10B981; text-anchor: middle; font-size: 13px; letter-spacing: 1px; text-transform: uppercase;">Retrieve</text>
+    <circle cx="140.55" cy="755.74" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#10B981" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="140.55" y="760.74" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #10B981; text-anchor: middle; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">Extract</text>
+    <circle cx="246.62" cy="649.67" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#10B981" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="246.62" y="654.67" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #10B981; text-anchor: middle; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">Map</text>
+    <circle cx="391.51" cy="688.49" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#10B981" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="391.51" y="693.49" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #10B981; text-anchor: middle; font-size: 13px; letter-spacing: 1px; text-transform: uppercase;">Integrate</text>
+    <circle cx="430.33" cy="833.38" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#10B981" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="430.33" y="838.38" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #10B981; text-anchor: middle; font-size: 13px; letter-spacing: 1px; text-transform: uppercase;">Navigate</text>
+    <circle cx="324.26" cy="939.45" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#10B981" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="324.26" y="944.45" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #10B981; text-anchor: middle; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">Deploy</text>
+    <circle cx="285.44" cy="794.56" r="76" fill="#10B981" stroke="#0A0F15" stroke-width="5" />
+    <circle cx="285.44" cy="794.56" r="69" fill="#0A0F15" fill-opacity="0.3" />
+    <text x="285.44" y="801.56" class="verb-text" style="font-size: 20px; font-weight: 800; fill: #0A0F15; text-anchor: middle; letter-spacing: 3px;">REMIND</text>
+    <circle cx="285.44" cy="285.44" r="150" fill="none" stroke="#10B981" stroke-opacity="0.25" stroke-width="1.5" stroke-dasharray="4 6" />
+    <circle cx="179.38" cy="179.38" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#10B981" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="179.38" y="184.38" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #10B981; text-anchor: middle; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">Scan</text>
+    <circle cx="353.54" cy="151.79" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#10B981" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="353.54" y="156.79" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #10B981; text-anchor: middle; font-size: 13px; letter-spacing: 1px; text-transform: uppercase;">Translate</text>
+    <circle cx="433.59" cy="308.91" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#10B981" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="433.59" y="313.91" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #10B981; text-anchor: middle; font-size: 13px; letter-spacing: 1px; text-transform: uppercase;">Evaluate</text>
+    <circle cx="308.91" cy="433.59" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#10B981" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="308.91" y="438.59" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #10B981; text-anchor: middle; font-size: 13px; letter-spacing: 1px; text-transform: uppercase;">Abstract</text>
+    <circle cx="151.79" cy="353.54" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#10B981" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="151.79" y="358.54" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #10B981; text-anchor: middle; font-size: 13px; letter-spacing: 1px; text-transform: uppercase;">Leverage</text>
+    <circle cx="285.44" cy="285.44" r="76" fill="#10B981" stroke="#0A0F15" stroke-width="5" />
+    <circle cx="285.44" cy="285.44" r="69" fill="#0A0F15" fill-opacity="0.3" />
+    <text x="285.44" y="292.44" class="verb-text" style="font-size: 20px; font-weight: 800; fill: #0A0F15; text-anchor: middle; letter-spacing: 3px;">STEAL</text>
+</g>
+            </svg>
+            <p class="desc">The outer ring fractures into specific <strong>Action Phrases</strong> for internal and external scanning.</p>
+        </div>
+
+        <!-- REASONING TORUS -->
+        <div class="card torus" style="margin-top: 0;">
+            <h3>Reasoning Orbit</h3>
+            <p class="subtitle" style="color:#3B82F6;">Compression Coordinates</p>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080">
+                <rect width="1080" height="1080" fill="#111823" rx="12"/>
+                <g>
+    <circle cx="540" cy="540" r="360" fill="none" stroke="#3B82F6" stroke-opacity="0.3" stroke-width="2" stroke-dasharray="8 8" />
+    <circle cx="540" cy="540" r="100" fill="#111823" stroke="#3B82F6" stroke-width="3" />
+    <circle cx="540" cy="540" r="92" fill="#3B82F6" fill-opacity="0.1" />
+    <text x="540" y="537" class="core-text-main" style="fill: #3B82F6; font-size: 20px;">REASONING</text>
+    <text x="540" y="558" class="core-text-sub" style="font-size: 11px;">ORBIT</text>
+    <circle cx="794.56" cy="285.44" r="150" fill="none" stroke="#3B82F6" stroke-opacity="0.25" stroke-width="1.5" stroke-dasharray="4 6" />
+    <circle cx="900.62" cy="179.38" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#3B82F6" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="900.62" y="184.38" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #3B82F6; text-anchor: middle; font-size: 13px; letter-spacing: 1px; text-transform: uppercase;">Deconstruct</text>
+    <circle cx="939.45" cy="324.26" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#3B82F6" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="939.45" y="329.26" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #3B82F6; text-anchor: middle; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">Isolate</text>
+    <circle cx="833.38" cy="430.33" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#3B82F6" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="833.38" y="435.33" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #3B82F6; text-anchor: middle; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">Group</text>
+    <circle cx="688.49" cy="391.51" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#3B82F6" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="688.49" y="396.51" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #3B82F6; text-anchor: middle; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">Extract</text>
+    <circle cx="649.67" cy="246.62" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#3B82F6" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="649.67" y="251.62" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #3B82F6; text-anchor: middle; font-size: 13px; letter-spacing: 1px; text-transform: uppercase;">Synthesize</text>
+    <circle cx="755.74" cy="140.55" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#3B82F6" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="755.74" y="145.55" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #3B82F6; text-anchor: middle; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">Trim</text>
+    <circle cx="794.56" cy="285.44" r="76" fill="#3B82F6" stroke="#0A0F15" stroke-width="5" />
+    <circle cx="794.56" cy="285.44" r="69" fill="#0A0F15" fill-opacity="0.3" />
+    <text x="794.56" y="292.44" class="verb-text" style="font-size: 20px; font-weight: 800; fill: #0A0F15; text-anchor: middle; letter-spacing: 3px;">DIGEST</text>
+    <circle cx="794.56" cy="794.56" r="150" fill="none" stroke="#3B82F6" stroke-opacity="0.25" stroke-width="1.5" stroke-dasharray="4 6" />
+    <circle cx="900.62" cy="900.62" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#3B82F6" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="900.62" y="905.62" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #3B82F6; text-anchor: middle; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">SCOPE</text>
+    <circle cx="777.76" cy="943.62" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#3B82F6" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="777.76" y="948.62" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #3B82F6; text-anchor: middle; font-size: 13px; letter-spacing: 1px; text-transform: uppercase;">POPULATE</text>
+    <circle cx="667.55" cy="874.36" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#3B82F6" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="667.55" y="879.36" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #3B82F6; text-anchor: middle; font-size: 13px; letter-spacing: 1px; text-transform: uppercase;">ANNOUNCE</text>
+    <circle cx="652.98" cy="745.02" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#3B82F6" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="652.98" y="750.02" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #3B82F6; text-anchor: middle; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">RUMBLE</text>
+    <circle cx="745.02" cy="652.98" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#3B82F6" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="745.02" y="657.98" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #3B82F6; text-anchor: middle; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">KNIT</text>
+    <circle cx="874.36" cy="667.55" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#3B82F6" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="874.36" y="672.55" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #3B82F6; text-anchor: middle; font-size: 13px; letter-spacing: 1px; text-transform: uppercase;">INTERROGATE</text>
+    <circle cx="943.62" cy="777.76" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#3B82F6" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="943.62" y="782.76" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #3B82F6; text-anchor: middle; font-size: 13px; letter-spacing: 1px; text-transform: uppercase;">TRANSMIT</text>
+    <circle cx="794.56" cy="794.56" r="76" fill="#3B82F6" stroke="#0A0F15" stroke-width="5" />
+    <circle cx="794.56" cy="794.56" r="69" fill="#0A0F15" fill-opacity="0.3" />
+    <text x="794.56" y="801.56" class="verb-text" style="font-size: 20px; font-weight: 800; fill: #0A0F15; text-anchor: middle; letter-spacing: 3px;">SPARKIT</text>
+    <circle cx="285.44" cy="794.56" r="150" fill="none" stroke="#3B82F6" stroke-opacity="0.25" stroke-width="1.5" stroke-dasharray="4 6" />
+    <circle cx="179.38" cy="900.62" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#3B82F6" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="179.38" y="905.62" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #3B82F6; text-anchor: middle; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">Group</text>
+    <circle cx="140.55" cy="755.74" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#3B82F6" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="140.55" y="760.74" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #3B82F6; text-anchor: middle; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">Align</text>
+    <circle cx="246.62" cy="649.67" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#3B82F6" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="246.62" y="654.67" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #3B82F6; text-anchor: middle; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">Track</text>
+    <circle cx="391.51" cy="688.49" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#3B82F6" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="391.51" y="693.49" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #3B82F6; text-anchor: middle; font-size: 13px; letter-spacing: 1px; text-transform: uppercase;">Harmonize</text>
+    <circle cx="430.33" cy="833.38" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#3B82F6" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="430.33" y="838.38" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #3B82F6; text-anchor: middle; font-size: 13px; letter-spacing: 1px; text-transform: uppercase;">Evaluate</text>
+    <circle cx="324.26" cy="939.45" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#3B82F6" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="324.26" y="944.45" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #3B82F6; text-anchor: middle; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">Resolve</text>
+    <circle cx="285.44" cy="794.56" r="76" fill="#3B82F6" stroke="#0A0F15" stroke-width="5" />
+    <circle cx="285.44" cy="794.56" r="69" fill="#0A0F15" fill-opacity="0.3" />
+    <text x="285.44" y="801.56" class="verb-text" style="font-size: 20px; font-weight: 800; fill: #0A0F15; text-anchor: middle; letter-spacing: 3px;">GATHER</text>
+    <circle cx="285.44" cy="285.44" r="150" fill="none" stroke="#3B82F6" stroke-opacity="0.25" stroke-width="1.5" stroke-dasharray="4 6" />
+    <circle cx="179.38" cy="179.38" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#3B82F6" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="179.38" y="184.38" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #3B82F6; text-anchor: middle; font-size: 13px; letter-spacing: 1px; text-transform: uppercase;">Calibrate</text>
+    <circle cx="302.24" cy="136.38" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#3B82F6" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="302.24" y="141.38" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #3B82F6; text-anchor: middle; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">Observe</text>
+    <circle cx="412.45" cy="205.64" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#3B82F6" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="412.45" y="210.64" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #3B82F6; text-anchor: middle; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">Map</text>
+    <circle cx="427.02" cy="334.98" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#3B82F6" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="427.02" y="339.98" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #3B82F6; text-anchor: middle; font-size: 13px; letter-spacing: 1px; text-transform: uppercase;">Polarize</text>
+    <circle cx="334.98" cy="427.02" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#3B82F6" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="334.98" y="432.02" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #3B82F6; text-anchor: middle; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">Analyze</text>
+    <circle cx="205.64" cy="412.45" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#3B82F6" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="205.64" y="417.45" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #3B82F6; text-anchor: middle; font-size: 13px; letter-spacing: 1px; text-transform: uppercase;">Recommend</text>
+    <circle cx="136.38" cy="302.24" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#3B82F6" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="136.38" y="307.24" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #3B82F6; text-anchor: middle; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">Extract</text>
+    <circle cx="285.44" cy="285.44" r="76" fill="#3B82F6" stroke="#0A0F15" stroke-width="5" />
+    <circle cx="285.44" cy="285.44" r="69" fill="#0A0F15" fill-opacity="0.3" />
+    <text x="285.44" y="292.44" class="verb-text" style="font-size: 20px; font-weight: 800; fill: #0A0F15; text-anchor: middle; letter-spacing: 3px;">COMPARE</text>
+</g>
+            </svg>
+            <p class="desc">The outer ring fractures into specific <strong>Action Phrases</strong> for cognitive alignment and SPAR dialectic.</p>
+        </div>
+
+        <!-- CONTRIBUTION TORUS -->
+        <div class="card torus" style="margin-top: 0;">
+            <h3>Contribution Orbit</h3>
+            <p class="subtitle" style="color:#D4AF37;">Output Coordinates</p>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080">
+                <rect width="1080" height="1080" fill="#111823" rx="12"/>
+                <g>
+    <circle cx="540" cy="540" r="360" fill="none" stroke="#D4AF37" stroke-opacity="0.3" stroke-width="2" stroke-dasharray="8 8" />
+    <circle cx="540" cy="540" r="100" fill="#111823" stroke="#D4AF37" stroke-width="3" />
+    <circle cx="540" cy="540" r="92" fill="#D4AF37" fill-opacity="0.1" />
+    <text x="540" y="537" class="core-text-main" style="fill: #D4AF37; font-size: 20px;">CONTRIBUTION</text>
+    <text x="540" y="558" class="core-text-sub" style="font-size: 11px;">ORBIT</text>
+    <circle cx="794.56" cy="285.44" r="150" fill="none" stroke="#D4AF37" stroke-opacity="0.25" stroke-width="1.5" stroke-dasharray="4 6" />
+    <circle cx="900.62" cy="179.38" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#D4AF37" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="900.62" y="184.38" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #D4AF37; text-anchor: middle; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">Profile</text>
+    <circle cx="943.62" cy="302.24" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#D4AF37" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="943.62" y="307.24" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #D4AF37; text-anchor: middle; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">Orient</text>
+    <circle cx="874.36" cy="412.45" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#D4AF37" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="874.36" y="417.45" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #D4AF37; text-anchor: middle; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">Shape</text>
+    <circle cx="745.02" cy="427.02" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#D4AF37" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="745.02" y="432.02" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #D4AF37; text-anchor: middle; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">Tailor</text>
+    <circle cx="652.98" cy="334.98" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#D4AF37" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="652.98" y="339.98" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #D4AF37; text-anchor: middle; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">Unify</text>
+    <circle cx="667.55" cy="205.64" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#D4AF37" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="667.55" y="210.64" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #D4AF37; text-anchor: middle; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">Refine</text>
+    <circle cx="777.76" cy="136.38" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#D4AF37" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="777.76" y="141.38" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #D4AF37; text-anchor: middle; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">Express</text>
+    <circle cx="794.56" cy="285.44" r="76" fill="#D4AF37" stroke="#0A0F15" stroke-width="5" />
+    <circle cx="794.56" cy="285.44" r="69" fill="#0A0F15" fill-opacity="0.3" />
+    <text x="794.56" y="292.44" class="verb-text" style="font-size: 20px; font-weight: 800; fill: #0A0F15; text-anchor: middle; letter-spacing: 3px;">POSTURE</text>
+    <circle cx="794.56" cy="794.56" r="150" fill="none" stroke="#D4AF37" stroke-opacity="0.25" stroke-width="1.5" stroke-dasharray="4 6" />
+    <circle cx="900.62" cy="900.62" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#D4AF37" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="900.62" y="905.62" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #D4AF37; text-anchor: middle; font-size: 13px; letter-spacing: 1px; text-transform: uppercase;">Formulate</text>
+    <circle cx="726.46" cy="928.21" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#D4AF37" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="726.46" y="933.21" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #D4AF37; text-anchor: middle; font-size: 13px; letter-spacing: 1px; text-transform: uppercase;">Organize</text>
+    <circle cx="646.41" cy="771.09" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#D4AF37" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="646.41" y="776.09" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #D4AF37; text-anchor: middle; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">Render</text>
+    <circle cx="771.09" cy="646.41" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#D4AF37" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="771.09" y="651.41" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #D4AF37; text-anchor: middle; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">Gauge</text>
+    <circle cx="928.21" cy="726.46" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#D4AF37" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="928.21" y="731.46" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #D4AF37; text-anchor: middle; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">Execute</text>
+    <circle cx="794.56" cy="794.56" r="76" fill="#D4AF37" stroke="#0A0F15" stroke-width="5" />
+    <circle cx="794.56" cy="794.56" r="69" fill="#0A0F15" fill-opacity="0.3" />
+    <text x="794.56" y="801.56" class="verb-text" style="font-size: 20px; font-weight: 800; fill: #0A0F15; text-anchor: middle; letter-spacing: 3px;">FORGE</text>
+    <circle cx="285.44" cy="794.56" r="150" fill="none" stroke="#D4AF37" stroke-opacity="0.25" stroke-width="1.5" stroke-dasharray="4 6" />
+    <circle cx="179.38" cy="900.62" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#D4AF37" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="179.38" y="905.62" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #D4AF37; text-anchor: middle; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">Tailor</text>
+    <circle cx="151.79" cy="726.46" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#D4AF37" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="151.79" y="731.46" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #D4AF37; text-anchor: middle; font-size: 13px; letter-spacing: 1px; text-transform: uppercase;">Empathize</text>
+    <circle cx="308.91" cy="646.41" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#D4AF37" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="308.91" y="651.41" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #D4AF37; text-anchor: middle; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">Anchor</text>
+    <circle cx="433.59" cy="771.09" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#D4AF37" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="433.59" y="776.09" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #D4AF37; text-anchor: middle; font-size: 13px; letter-spacing: 1px; text-transform: uppercase;">Challenge</text>
+    <circle cx="353.54" cy="928.21" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#D4AF37" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="353.54" y="933.21" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #D4AF37; text-anchor: middle; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">Help</text>
+    <circle cx="285.44" cy="794.56" r="76" fill="#D4AF37" stroke="#0A0F15" stroke-width="5" />
+    <circle cx="285.44" cy="794.56" r="69" fill="#0A0F15" fill-opacity="0.3" />
+    <text x="285.44" y="801.56" class="verb-text" style="font-size: 20px; font-weight: 800; fill: #0A0F15; text-anchor: middle; letter-spacing: 3px;">TEACH</text>
+    <circle cx="285.44" cy="285.44" r="150" fill="none" stroke="#D4AF37" stroke-opacity="0.25" stroke-width="1.5" stroke-dasharray="4 6" />
+    <circle cx="179.38" cy="179.38" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#D4AF37" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="179.38" y="184.38" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #D4AF37; text-anchor: middle; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">Model</text>
+    <circle cx="324.26" cy="140.55" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#D4AF37" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="324.26" y="145.55" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #D4AF37; text-anchor: middle; font-size: 13px; letter-spacing: 1px; text-transform: uppercase;">Empathize</text>
+    <circle cx="430.33" cy="246.62" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#D4AF37" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="430.33" y="251.62" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #D4AF37; text-anchor: middle; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">Nurture</text>
+    <circle cx="391.51" cy="391.51" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#D4AF37" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="391.51" y="396.51" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #D4AF37; text-anchor: middle; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">Tune</text>
+    <circle cx="246.62" cy="430.33" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#D4AF37" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="246.62" y="435.33" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #D4AF37; text-anchor: middle; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">Observe</text>
+    <circle cx="140.55" cy="324.26" r="56" fill="#0A0F15" fill-opacity="0.85" stroke="#D4AF37" stroke-width="2" stroke-opacity="0.9"/>
+    <text x="140.55" y="329.26" style="font-family: 'Outfit', sans-serif; font-weight: 700; fill: #D4AF37; text-anchor: middle; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">Release</text>
+    <circle cx="285.44" cy="285.44" r="76" fill="#D4AF37" stroke="#0A0F15" stroke-width="5" />
+    <circle cx="285.44" cy="285.44" r="69" fill="#0A0F15" fill-opacity="0.3" />
+    <text x="285.44" y="292.44" class="verb-text" style="font-size: 20px; font-weight: 800; fill: #0A0F15; text-anchor: middle; letter-spacing: 3px;">MENTOR</text>
+</g>
+            </svg>
+            <p class="desc">The outer ring fractures into specific <strong>Action Phrases</strong> mapped to agentic execution and artifact creation.</p>
+        </div>
+
+    </div>
+
+</body>
+</html>
