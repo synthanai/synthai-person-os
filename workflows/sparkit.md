@@ -61,7 +61,7 @@ The Moderator must intervene if the debate becomes an echo chamber. Force them t
 ### K , Knit
 
 Find the synthesis. Where do the divergent paths converge?
-Identify the dialectic resolution—the "third way" that solves the contradiction.
+Identify the dialectic resolution, the "third way" that solves the contradiction.
 
 ### I , Interrogate
 
